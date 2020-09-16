@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Clinique.EntityFramework.Migrations
 {
-    [DbContext(typeof(CliniqueDbContextFactory))]
+    [DbContext(typeof(CliniqueDbContext))]
     partial class CliniqueDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

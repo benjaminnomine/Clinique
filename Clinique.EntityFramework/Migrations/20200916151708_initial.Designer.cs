@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Clinique.EntityFramework.Migrations
 {
-    [DbContext(typeof(CliniqueDbContextFactory))]
-    [Migration("20200915003050_initial")]
+    [DbContext(typeof(CliniqueDbContext))]
+    [Migration("20200916151708_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

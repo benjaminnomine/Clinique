@@ -11,7 +11,7 @@ namespace Clinique.EntityFramework
         public CliniqueDbContext CreateDbContext(string[] args = null)
         {
             var options = new DbContextOptionsBuilder<CliniqueDbContext>();
-            options.UseSqlServer("Data Source=(localdb)\\MSSQLlocalDB;Integrated Security=True");
+            options.UseSqlServer("Data Source=(localdb)\\MSSQLlocalDB;Integrated Security=True;Database=Clinique;");
 
             return new CliniqueDbContext(options.Options);
         }
