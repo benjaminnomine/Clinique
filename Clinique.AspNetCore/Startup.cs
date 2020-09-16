@@ -2,6 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Clinique.Domain.Models;
+using Clinique.Domain.Services;
+using Clinique.EntityFramework;
+using Clinique.EntityFramework.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +26,8 @@ namespace Clinique.AspNetCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSession();
+            services.AddSingleton<CliniqueDbContextFactory>();
             services.AddControllersWithViews();
         }
 

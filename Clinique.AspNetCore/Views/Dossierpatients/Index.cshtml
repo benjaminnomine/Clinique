@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Clinique.Domain.Models.Dossierpatient>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrenomP)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Genre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumAS)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateNaiss)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Docteur)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrenomP)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Genre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumAS)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateNaiss)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Docteur.Id)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

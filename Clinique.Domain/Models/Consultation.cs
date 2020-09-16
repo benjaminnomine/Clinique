@@ -10,28 +10,27 @@ namespace Clinique.Domain.Models
 {
     public class Consultation : DomainObject
     {
-        public int CodeDocteur { get; set; }
-        public int NumDos { get; set; }
+        //[ForeignKey("Docteur")]
+        public int IdDocteur { get; set; }
+        //public Docteur Docteur { get;set;}
+        //[ForeignKey("Dossierpatient")]
+        public int IdDossierpatient { get; set; }
+        //public Dossierpatient Dossierpatient { get;set;}
         public DateTime DateC { get; set; }
         public string Diagnostic { get; set; }
-        public int NumOrd { get;set;}
 
-        public Ordonnance Ordonnance { get;set;}
-        public Docteur Docteur { get;set;}
-        public Dossierpatient Dossierpatient { get;set;}
+        //[ForeignKey("Ordonnance")]
+        public int IdOrdonnance { get; set; }
+        //public Ordonnance Ordonnance { get;set;}
+        //public Consultation()
+        //{
 
-        public Consultation()
-        {
+        //}
 
-        }
-
-        public Consultation(int codeDocteur, int numDos, DateTime dateC, string diagnostic, int numOrd)
-        {
-            CodeDocteur = codeDocteur;
-            NumDos = numDos;
-            DateC = dateC;
-            Diagnostic = diagnostic;
-            NumOrd = numOrd;
-        }
+        //public Consultation(DateTime dateC, string diagnostic)
+        //{
+        //    DateC = dateC;
+        //    Diagnostic = diagnostic;
+        //}
     }
 }

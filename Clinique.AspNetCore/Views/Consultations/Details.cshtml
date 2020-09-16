@@ -1,0 +1,36 @@
+﻿@model Clinique.Domain.Models.Consultation
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Consultation</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateC)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateC)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Diagnostic)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Diagnostic)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IdOrdonnance)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IdOrdonnance)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

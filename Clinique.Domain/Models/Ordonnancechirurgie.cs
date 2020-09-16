@@ -10,21 +10,21 @@ namespace Clinique.Domain.Models
 {
     public class Ordonnancechirurgie : DomainObject
     {
-        public int NumOrd { get; set; }
         public int Rang { get; set; }
         public string NomChirurgie { get; set; }
+        [ForeignKey("Ordonnance")]
+        public int IdOrdonnance { get;set;}
         public Ordonnance Ordonnance { get; set; }
 
-        public Ordonnancechirurgie()
-        {
+        //public Ordonnancechirurgie()
+        //{
 
-        }
+        //}
 
-        public Ordonnancechirurgie(int numOrd, int rang, string nomChirurgie)
-        {
-            NumOrd = numOrd;
-            Rang = rang;
-            NomChirurgie = nomChirurgie;
-        }
+        //public Ordonnancechirurgie(int rang, string nomChirurgie)
+        //{
+        //    Rang = rang;
+        //    NomChirurgie = nomChirurgie;
+        //}
     }
 }

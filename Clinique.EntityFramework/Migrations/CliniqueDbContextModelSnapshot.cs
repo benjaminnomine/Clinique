@@ -44,37 +44,26 @@ namespace Clinique.EntityFramework.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CodeDocteur")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("DateC")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Diagnostic")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DocteurId")
+                    b.Property<int>("IdDocteur")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DossierpatientId")
+                    b.Property<int>("IdDossierpatient")
                         .HasColumnType("int");
 
-                    b.Property<int>("NumDos")
-                        .HasColumnType("int");
-
-                    b.Property<int>("NumOrd")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OrdonnanceId")
+                    b.Property<int>("IdOrdonnance")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DocteurId");
+                    b.HasAlternateKey("IdDocteur", "IdDossierpatient", "DateC");
 
-                    b.HasIndex("DossierpatientId");
-
-                    b.HasIndex("OrdonnanceId");
+                    b.HasIndex("IdDossierpatient");
 
                     b.ToTable("Consultations");
                 });
@@ -108,15 +97,12 @@ namespace Clinique.EntityFramework.Migrations
                     b.Property<string>("PrenomM")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SpecialiteId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Ville")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SpecialiteId");
+                    b.HasIndex("IdSpecialite");
 
                     b.ToTable("Docteurs");
                 });
@@ -134,14 +120,11 @@ namespace Clinique.EntityFramework.Migrations
                     b.Property<DateTime>("DateNaiss")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DocteurId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Genre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Matricule")
+                    b.Property<int>("IdDocteur")
                         .HasColumnType("int");
 
                     b.Property<string>("NomP")
@@ -150,15 +133,12 @@ namespace Clinique.EntityFramework.Migrations
                     b.Property<int>("NumAS")
                         .HasColumnType("int");
 
-                    b.Property<int>("NumDos")
-                        .HasColumnType("int");
-
                     b.Property<string>("PrenomP")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DocteurId");
+                    b.HasIndex("IdDocteur");
 
                     b.ToTable("Dossierpatients");
                 });
@@ -170,13 +150,7 @@ namespace Clinique.EntityFramework.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategorieId")
-                        .HasColumnType("int");
-
                     b.Property<int>("IdCategorie")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdMed")
                         .HasColumnType("int");
 
                     b.Property<string>("NomMed")
@@ -187,7 +161,7 @@ namespace Clinique.EntityFramework.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CategorieId");
+                    b.HasIndex("IdCategorie");
 
                     b.ToTable("Medicaments");
                 });
@@ -201,9 +175,6 @@ namespace Clinique.EntityFramework.Migrations
 
                     b.Property<DateTime>("DateC")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("NumOrd")
-                        .HasColumnType("int");
 
                     b.Property<string>("Recommandations")
                         .HasColumnType("nvarchar(max)");
@@ -224,21 +195,18 @@ namespace Clinique.EntityFramework.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("IdOrdonnance")
+                        .HasColumnType("int");
+
                     b.Property<string>("NomChirurgie")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("NumOrd")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("OrdonnanceId")
-                        .HasColumnType("int");
 
                     b.Property<int>("Rang")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrdonnanceId");
+                    b.HasIndex("IdOrdonnance");
 
                     b.ToTable("Ordonnancechirurgies");
                 });
@@ -250,28 +218,52 @@ namespace Clinique.EntityFramework.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("IdMed")
+                    b.Property<int>("IdMedicament")
                         .HasColumnType("int");
 
-                    b.Property<int?>("MedicamentId")
+                    b.Property<int>("IdOrdonnance")
                         .HasColumnType("int");
 
                     b.Property<int>("NbBoites")
                         .HasColumnType("int");
 
-                    b.Property<int>("NumOrd")
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdMedicament");
+
+                    b.HasIndex("IdOrdonnance");
+
+                    b.ToTable("Ordonnancemedicaments");
+                });
+
+            modelBuilder.Entity("Clinique.Domain.Models.RendezVous", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("DateRdv")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Duree")
+                        .HasColumnType("float");
+
+                    b.Property<int>("IdDocteur")
                         .HasColumnType("int");
 
-                    b.Property<int?>("OrdonnanceId")
+                    b.Property<int>("IdDossierpatient")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MedicamentId");
+                    b.HasAlternateKey("DateRdv", "IdDocteur", "IdDossierpatient");
 
-                    b.HasIndex("OrdonnanceId");
+                    b.HasIndex("IdDocteur");
 
-                    b.ToTable("Ordonnancemedicaments");
+                    b.HasIndex("IdDossierpatient");
+
+                    b.ToTable("RendezVous");
                 });
 
             modelBuilder.Entity("Clinique.Domain.Models.Specialite", b =>
@@ -294,56 +286,83 @@ namespace Clinique.EntityFramework.Migrations
 
             modelBuilder.Entity("Clinique.Domain.Models.Consultation", b =>
                 {
-                    b.HasOne("Clinique.Domain.Models.Docteur", "Docteur")
-                        .WithMany()
-                        .HasForeignKey("DocteurId");
+                    b.HasOne("Clinique.Domain.Models.Docteur", null)
+                        .WithMany("Consultations")
+                        .HasForeignKey("IdDocteur")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
-                    b.HasOne("Clinique.Domain.Models.Dossierpatient", "Dossierpatient")
-                        .WithMany()
-                        .HasForeignKey("DossierpatientId");
-
-                    b.HasOne("Clinique.Domain.Models.Ordonnance", "Ordonnance")
-                        .WithMany()
-                        .HasForeignKey("OrdonnanceId");
+                    b.HasOne("Clinique.Domain.Models.Dossierpatient", null)
+                        .WithMany("Consultations")
+                        .HasForeignKey("IdDossierpatient")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Clinique.Domain.Models.Docteur", b =>
                 {
                     b.HasOne("Clinique.Domain.Models.Specialite", "Specialite")
-                        .WithMany()
-                        .HasForeignKey("SpecialiteId");
+                        .WithMany("Docteurs")
+                        .HasForeignKey("IdSpecialite")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Clinique.Domain.Models.Dossierpatient", b =>
                 {
                     b.HasOne("Clinique.Domain.Models.Docteur", "Docteur")
-                        .WithMany()
-                        .HasForeignKey("DocteurId");
+                        .WithMany("Dossierspatients")
+                        .HasForeignKey("IdDocteur")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Clinique.Domain.Models.Medicament", b =>
                 {
                     b.HasOne("Clinique.Domain.Models.Categorie", "Categorie")
-                        .WithMany()
-                        .HasForeignKey("CategorieId");
+                        .WithMany("Medicaments")
+                        .HasForeignKey("IdCategorie")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Clinique.Domain.Models.Ordonnancechirurgie", b =>
                 {
                     b.HasOne("Clinique.Domain.Models.Ordonnance", "Ordonnance")
-                        .WithMany()
-                        .HasForeignKey("OrdonnanceId");
+                        .WithMany("Ordonnancechirurgies")
+                        .HasForeignKey("IdOrdonnance")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Clinique.Domain.Models.Ordonnancemedicament", b =>
                 {
                     b.HasOne("Clinique.Domain.Models.Medicament", "Medicament")
-                        .WithMany()
-                        .HasForeignKey("MedicamentId");
+                        .WithMany("Ordonnancemedicaments")
+                        .HasForeignKey("IdMedicament")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Clinique.Domain.Models.Ordonnance", "Ordonnance")
-                        .WithMany()
-                        .HasForeignKey("OrdonnanceId");
+                        .WithMany("Ordonnancemedicaments")
+                        .HasForeignKey("IdOrdonnance")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Clinique.Domain.Models.RendezVous", b =>
+                {
+                    b.HasOne("Clinique.Domain.Models.Docteur", null)
+                        .WithMany("RendezVous")
+                        .HasForeignKey("IdDocteur")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Clinique.Domain.Models.Dossierpatient", null)
+                        .WithMany("RendezVous")
+                        .HasForeignKey("IdDossierpatient")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
