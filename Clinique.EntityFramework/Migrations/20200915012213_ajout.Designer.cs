@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Clinique.EntityFramework.Migrations
 {
-    [DbContext(typeof(CliniqueDbContext))]
+    [DbContext(typeof(CliniqueDbContextFactory))]
     [Migration("20200915012213_ajout")]
     partial class ajout
     {

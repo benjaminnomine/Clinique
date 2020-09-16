@@ -12,17 +12,17 @@ namespace Clinique.AspNetCore.Controllers
 {
     public class DossierpatientsController : Controller
     {
-        private readonly CliniqueDbContext _context;
+        private readonly CliniqueDbContextFactory _contextFactory;
 
-        public DossierpatientsController(CliniqueDbContext context)
+        public DossierpatientsController(CliniqueDbContextFactory contextFactory)
         {
-            _context = context;
+            _contextFactory = contextFactory;
         }
 
         // GET: Dossierpatients
         public async Task<IActionResult> Index()
         {
-            var cliniqueDbContext = _context.Dossierpatients.Include(d => d.Docteur);
+            var cliniqueDbContext = _contextFactory.CreateDbContext().Dossierpatients.Include(d => d.Docteur);
             return View(await cliniqueDbContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var dossierpatient = await _context.Dossierpatients
+            var dossierpatient = await _contextFactory.CreateDbContext().Dossierpatients
                 .Include(d => d.Docteur)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (dossierpatient == null)
@@ -48,7 +48,7 @@ namespace Clinique.AspNetCore.Controllers
         // GET: Dossierpatients/Create
         public IActionResult Create()
         {
-            ViewData["IdDocteur"] = new SelectList(_context.Docteurs, "Id", "Id");
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "Id");
             return View();
         }
 
@@ -61,11 +61,11 @@ namespace Clinique.AspNetCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(dossierpatient);
-                await _context.SaveChangesAsync();
+                _contextFactory.CreateDbContext().Add(dossierpatient);
+                await _contextFactory.CreateDbContext().SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdDocteur"] = new SelectList(_context.Docteurs, "Id", "Id", dossierpatient.IdDocteur);
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "Id", dossierpatient.IdDocteur);
             return View(dossierpatient);
         }
 
@@ -77,12 +77,12 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var dossierpatient = await _context.Dossierpatients.FindAsync(id);
+            var dossierpatient = await _contextFactory.CreateDbContext().Dossierpatients.FindAsync(id);
             if (dossierpatient == null)
             {
                 return NotFound();
             }
-            ViewData["IdDocteur"] = new SelectList(_context.Docteurs, "Id", "Id", dossierpatient.IdDocteur);
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "Id", dossierpatient.IdDocteur);
             return View(dossierpatient);
         }
 
@@ -102,8 +102,8 @@ namespace Clinique.AspNetCore.Controllers
             {
                 try
                 {
-                    _context.Update(dossierpatient);
-                    await _context.SaveChangesAsync();
+                    _contextFactory.CreateDbContext().Update(dossierpatient);
+                    await _contextFactory.CreateDbContext().SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,7 +118,7 @@ namespace Clinique.AspNetCore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdDocteur"] = new SelectList(_context.Docteurs, "Id", "Id", dossierpatient.IdDocteur);
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "Id", dossierpatient.IdDocteur);
             return View(dossierpatient);
         }
 
@@ -130,7 +130,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var dossierpatient = await _context.Dossierpatients
+            var dossierpatient = await _contextFactory.CreateDbContext().Dossierpatients
                 .Include(d => d.Docteur)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (dossierpatient == null)
@@ -146,15 +146,15 @@ namespace Clinique.AspNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var dossierpatient = await _context.Dossierpatients.FindAsync(id);
-            _context.Dossierpatients.Remove(dossierpatient);
-            await _context.SaveChangesAsync();
+            var dossierpatient = await _contextFactory.CreateDbContext().Dossierpatients.FindAsync(id);
+            _contextFactory.CreateDbContext().Dossierpatients.Remove(dossierpatient);
+            await _contextFactory.CreateDbContext().SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool DossierpatientExists(int id)
         {
-            return _context.Dossierpatients.Any(e => e.Id == id);
+            return _contextFactory.CreateDbContext().Dossierpatients.Any(e => e.Id == id);
         }
     }
 }

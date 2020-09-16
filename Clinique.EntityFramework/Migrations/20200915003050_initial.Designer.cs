@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Clinique.EntityFramework.Migrations
 {
-    [DbContext(typeof(CliniqueDbContext))]
+    [DbContext(typeof(CliniqueDbContextFactory))]
     [Migration("20200915003050_initial")]
     partial class initial
     {

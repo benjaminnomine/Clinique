@@ -12,17 +12,17 @@ namespace Clinique.AspNetCore.Controllers
 {
     public class OrdonnancechirurgiesController : Controller
     {
-        private readonly CliniqueDbContext _context;
+        private readonly CliniqueDbContextFactory _contextFactory;
 
-        public OrdonnancechirurgiesController(CliniqueDbContext context)
+        public OrdonnancechirurgiesController(CliniqueDbContextFactory contextFactory)
         {
-            _context = context;
+            _contextFactory = contextFactory;
         }
 
         // GET: Ordonnancechirurgies
         public async Task<IActionResult> Index()
         {
-            var cliniqueDbContext = _context.Ordonnancechirurgies.Include(o => o.Ordonnance);
+            var cliniqueDbContext = _contextFactory.CreateDbContext().Ordonnancechirurgies.Include(o => o.Ordonnance);
             return View(await cliniqueDbContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var ordonnancechirurgie = await _context.Ordonnancechirurgies
+            var ordonnancechirurgie = await _contextFactory.CreateDbContext().Ordonnancechirurgies
                 .Include(o => o.Ordonnance)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ordonnancechirurgie == null)
@@ -48,7 +48,7 @@ namespace Clinique.AspNetCore.Controllers
         // GET: Ordonnancechirurgies/Create
         public IActionResult Create()
         {
-            ViewData["IdOrdonnance"] = new SelectList(_context.Ordonnances, "Id", "Id");
+            ViewData["IdOrdonnance"] = new SelectList(_contextFactory.CreateDbContext().Ordonnances, "Id", "Id");
             return View();
         }
 
@@ -61,11 +61,11 @@ namespace Clinique.AspNetCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(ordonnancechirurgie);
-                await _context.SaveChangesAsync();
+                _contextFactory.CreateDbContext().Add(ordonnancechirurgie);
+                await _contextFactory.CreateDbContext().SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdOrdonnance"] = new SelectList(_context.Ordonnances, "Id", "Id", ordonnancechirurgie.IdOrdonnance);
+            ViewData["IdOrdonnance"] = new SelectList(_contextFactory.CreateDbContext().Ordonnances, "Id", "Id", ordonnancechirurgie.IdOrdonnance);
             return View(ordonnancechirurgie);
         }
 
@@ -77,12 +77,12 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var ordonnancechirurgie = await _context.Ordonnancechirurgies.FindAsync(id);
+            var ordonnancechirurgie = await _contextFactory.CreateDbContext().Ordonnancechirurgies.FindAsync(id);
             if (ordonnancechirurgie == null)
             {
                 return NotFound();
             }
-            ViewData["IdOrdonnance"] = new SelectList(_context.Ordonnances, "Id", "Id", ordonnancechirurgie.IdOrdonnance);
+            ViewData["IdOrdonnance"] = new SelectList(_contextFactory.CreateDbContext().Ordonnances, "Id", "Id", ordonnancechirurgie.IdOrdonnance);
             return View(ordonnancechirurgie);
         }
 
@@ -102,8 +102,8 @@ namespace Clinique.AspNetCore.Controllers
             {
                 try
                 {
-                    _context.Update(ordonnancechirurgie);
-                    await _context.SaveChangesAsync();
+                    _contextFactory.CreateDbContext().Update(ordonnancechirurgie);
+                    await _contextFactory.CreateDbContext().SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -118,7 +118,7 @@ namespace Clinique.AspNetCore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdOrdonnance"] = new SelectList(_context.Ordonnances, "Id", "Id", ordonnancechirurgie.IdOrdonnance);
+            ViewData["IdOrdonnance"] = new SelectList(_contextFactory.CreateDbContext().Ordonnances, "Id", "Id", ordonnancechirurgie.IdOrdonnance);
             return View(ordonnancechirurgie);
         }
 
@@ -130,7 +130,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var ordonnancechirurgie = await _context.Ordonnancechirurgies
+            var ordonnancechirurgie = await _contextFactory.CreateDbContext().Ordonnancechirurgies
                 .Include(o => o.Ordonnance)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ordonnancechirurgie == null)
@@ -146,15 +146,15 @@ namespace Clinique.AspNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ordonnancechirurgie = await _context.Ordonnancechirurgies.FindAsync(id);
-            _context.Ordonnancechirurgies.Remove(ordonnancechirurgie);
-            await _context.SaveChangesAsync();
+            var ordonnancechirurgie = await _contextFactory.CreateDbContext().Ordonnancechirurgies.FindAsync(id);
+            _contextFactory.CreateDbContext().Ordonnancechirurgies.Remove(ordonnancechirurgie);
+            await _contextFactory.CreateDbContext().SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool OrdonnancechirurgieExists(int id)
         {
-            return _context.Ordonnancechirurgies.Any(e => e.Id == id);
+            return _contextFactory.CreateDbContext().Ordonnancechirurgies.Any(e => e.Id == id);
         }
     }
 }

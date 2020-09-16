@@ -12,17 +12,17 @@ namespace Clinique.AspNetCore.Controllers
 {
     public class ConsultationsController : Controller
     {
-        private readonly CliniqueDbContext _context;
+        private readonly CliniqueDbContextFactory _contextFactory;
 
-        public ConsultationsController(CliniqueDbContext context)
+        public ConsultationsController(CliniqueDbContextFactory contextFactory)
         {
-            _context = context;
+            _contextFactory = contextFactory;
         }
 
         // GET: Consultations
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Consultations.ToListAsync());
+            return View(await _contextFactory.CreateDbContext().Consultations.ToListAsync());
         }
 
         // GET: Consultations/Details/5
@@ -33,7 +33,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var consultation = await _context.Consultations
+            var consultation = await _contextFactory.CreateDbContext().Consultations
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (consultation == null)
             {
@@ -58,8 +58,8 @@ namespace Clinique.AspNetCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(consultation);
-                await _context.SaveChangesAsync();
+                _contextFactory.CreateDbContext().Add(consultation);
+                await _contextFactory.CreateDbContext().SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(consultation);
@@ -73,7 +73,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var consultation = await _context.Consultations.FindAsync(id);
+            var consultation = await _contextFactory.CreateDbContext().Consultations.FindAsync(id);
             if (consultation == null)
             {
                 return NotFound();
@@ -97,8 +97,8 @@ namespace Clinique.AspNetCore.Controllers
             {
                 try
                 {
-                    _context.Update(consultation);
-                    await _context.SaveChangesAsync();
+                    _contextFactory.CreateDbContext().Update(consultation);
+                    await _contextFactory.CreateDbContext().SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,7 +124,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var consultation = await _context.Consultations
+            var consultation = await _contextFactory.CreateDbContext().Consultations
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (consultation == null)
             {
@@ -139,15 +139,15 @@ namespace Clinique.AspNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var consultation = await _context.Consultations.FindAsync(id);
-            _context.Consultations.Remove(consultation);
-            await _context.SaveChangesAsync();
+            var consultation = await _contextFactory.CreateDbContext().Consultations.FindAsync(id);
+            _contextFactory.CreateDbContext().Consultations.Remove(consultation);
+            await _contextFactory.CreateDbContext().SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ConsultationExists(int id)
         {
-            return _context.Consultations.Any(e => e.Id == id);
+            return _contextFactory.CreateDbContext().Consultations.Any(e => e.Id == id);
         }
     }
 }

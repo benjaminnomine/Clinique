@@ -12,17 +12,17 @@ namespace Clinique.AspNetCore.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly CliniqueDbContext _context;
+        private readonly CliniqueDbContextFactory _contextFactory;
 
-        public CategoriesController(CliniqueDbContext context)
+        public CategoriesController(CliniqueDbContextFactory contextFactory)
         {
-            _context = context;
+            _contextFactory = contextFactory;
         }
 
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(await _contextFactory.CreateDbContext().Categories.ToListAsync());
         }
 
         // GET: Categories/Details/5
@@ -33,7 +33,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var categorie = await _context.Categories
+            var categorie = await _contextFactory.CreateDbContext().Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (categorie == null)
             {
@@ -58,8 +58,8 @@ namespace Clinique.AspNetCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(categorie);
-                await _context.SaveChangesAsync();
+                _contextFactory.CreateDbContext().Add(categorie);
+                await _contextFactory.CreateDbContext().SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(categorie);
@@ -73,7 +73,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var categorie = await _context.Categories.FindAsync(id);
+            var categorie = await _contextFactory.CreateDbContext().Categories.FindAsync(id);
             if (categorie == null)
             {
                 return NotFound();
@@ -97,8 +97,8 @@ namespace Clinique.AspNetCore.Controllers
             {
                 try
                 {
-                    _context.Update(categorie);
-                    await _context.SaveChangesAsync();
+                    _contextFactory.CreateDbContext().Update(categorie);
+                    await _contextFactory.CreateDbContext().SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,7 +124,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var categorie = await _context.Categories
+            var categorie = await _contextFactory.CreateDbContext().Categories
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (categorie == null)
             {
@@ -139,15 +139,15 @@ namespace Clinique.AspNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var categorie = await _context.Categories.FindAsync(id);
-            _context.Categories.Remove(categorie);
-            await _context.SaveChangesAsync();
+            var categorie = await _contextFactory.CreateDbContext().Categories.FindAsync(id);
+            _contextFactory.CreateDbContext().Categories.Remove(categorie);
+            await _contextFactory.CreateDbContext().SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CategorieExists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return _contextFactory.CreateDbContext().Categories.Any(e => e.Id == id);
         }
     }
 }
