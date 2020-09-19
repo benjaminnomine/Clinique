@@ -22,15 +22,15 @@ namespace Clinique.Domain.Models
         //[ForeignKey("Ordonnance")]
         public int IdOrdonnance { get; set; }
         //public Ordonnance Ordonnance { get;set;}
-        //public Consultation()
-        //{
+        public Consultation()
+        {
 
-        //}
+        }
 
-        //public Consultation(DateTime dateC, string diagnostic)
-        //{
-        //    DateC = dateC;
-        //    Diagnostic = diagnostic;
-        //}
+        public Consultation(DateTime dateC, string diagnostic)
+        {
+            DateC = dateC;
+            Diagnostic = diagnostic;
+        }
     }
 }

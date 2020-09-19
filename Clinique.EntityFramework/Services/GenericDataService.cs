@@ -10,32 +10,22 @@ namespace Clinique.EntityFramework.Services
     public class GenericDataService<T> : IDataService<T> where T : DomainObject
     {
         private readonly CliniqueDbContextFactory _contextFactory;
+        private readonly NonQueryDataService<T> _nonQueryDataService;
 
         public GenericDataService(CliniqueDbContextFactory contextFactory)
         {
             _contextFactory = contextFactory;
+            _nonQueryDataService = new NonQueryDataService<T>(contextFactory);
         }
 
         public async Task<T> Create(T entity)
         {
-            using(CliniqueDbContext context = _contextFactory.CreateDbContext())
-            {
-                EntityEntry<T> newEntity = await context.Set<T>().AddAsync(entity);
-                await context.SaveChangesAsync();
-
-                return newEntity.Entity;
-            }
+            return await _nonQueryDataService.Create(entity);
         }
 
         public async Task<bool> Delete(int id)
         {
-            using (CliniqueDbContext context = _contextFactory.CreateDbContext())
-            {
-                T entity = await context.Set<T>().FirstOrDefaultAsync((e) => e.Id == id);
-                await context.SaveChangesAsync();
-
-                return true;
-            }
+            return await _nonQueryDataService.Delete(id);
         }
 
         public async Task<T> Get(int id)
@@ -58,14 +48,7 @@ namespace Clinique.EntityFramework.Services
 
         public async Task<T> Update(int id, T entity)
         {
-            using (CliniqueDbContext context = _contextFactory.CreateDbContext())
-            {
-                entity.Id = id;
-                context.Set<T>().Update(entity);
-                await context.SaveChangesAsync();
-
-                return entity;
-            }
+            return await _nonQueryDataService.Update(id, entity);
         }
     }
 }

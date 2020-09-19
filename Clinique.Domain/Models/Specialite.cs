@@ -15,15 +15,15 @@ namespace Clinique.Domain.Models
 
         public virtual ICollection<Docteur> Docteurs { get;set;}
 
-        //public Specialite()
-        //{
+        public Specialite()
+        {
 
-        //}
+        }
 
-        //public Specialite(string titre, string description)
-        //{
-        //    Titre = titre;
-        //    Description = description;
-        //}
+        public Specialite(string titre, string description)
+        {
+            Titre = titre;
+            Description = description;
+        }
     }
 }

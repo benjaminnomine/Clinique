@@ -22,29 +22,29 @@ namespace Clinique.Domain.Models
         public virtual ICollection<Consultation> Consultations { get;set;}
         public virtual ICollection<RendezVous> RendezVous { get; set; }
 
-        //public Dossierpatient()
-        //{
+        public Dossierpatient()
+        {
 
-        //}
+        }
 
-        //public Dossierpatient(string nomP, string prenomP, Genre genre, int numAS, DateTime dateNaiss, DateTime dateC)
-        //{
-        //    NomP = nomP;
-        //    PrenomP = prenomP;
-        //    Genre = genre;
-        //    NumAS = numAS;
-        //    DateNaiss = dateNaiss;
-        //    DateC = dateC;
-        //}
+        public Dossierpatient(string nomP, string prenomP, Genre genre, int numAS, DateTime dateNaiss, DateTime dateC)
+        {
+            NomP = nomP;
+            PrenomP = prenomP;
+            Genre = genre;
+            NumAS = numAS;
+            DateNaiss = dateNaiss;
+            DateC = dateC;
+        }
 
-        //public Dossierpatient(string nomP, string prenomP, Genre genre, int numAS, DateTime dateNaiss)
-        //{
-        //    NomP = nomP;
-        //    PrenomP = prenomP;
-        //    Genre = genre;
-        //    NumAS = numAS;
-        //    DateNaiss = dateNaiss;
-        //    DateC = DateTime.Now;
-        //}
+        public Dossierpatient(string nomP, string prenomP, Genre genre, int numAS, DateTime dateNaiss)
+        {
+            NomP = nomP;
+            PrenomP = prenomP;
+            Genre = genre;
+            NumAS = numAS;
+            DateNaiss = dateNaiss;
+            DateC = DateTime.Now;
+        }
     }
 }

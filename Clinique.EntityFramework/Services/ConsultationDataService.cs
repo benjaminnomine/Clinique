@@ -1,4 +1,5 @@
 ﻿using Clinique.Domain.Models;
+using Clinique.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
@@ -7,24 +8,20 @@ using System.Threading.Tasks;
 
 namespace Clinique.EntityFramework.Services
 {
-    class ConsultationDataService
+    public class ConsultationDataService : IDataService<Consultation>
     {
         private readonly CliniqueDbContextFactory _contextFactory;
+        private readonly NonQueryDataService<Consultation> _nonQueryDataService;
 
         public ConsultationDataService(CliniqueDbContextFactory contextFactory)
         {
             _contextFactory = contextFactory;
+            _nonQueryDataService = new NonQueryDataService<Consultation>(contextFactory);
         }
 
         public async Task<Consultation> Create(Consultation entity)
         {
-            using (CliniqueDbContext context = _contextFactory.CreateDbContext())
-            {
-                EntityEntry<Consultation> newEntity = await context.Set<Consultation>().AddAsync(entity);
-                await context.SaveChangesAsync();
-
-                return newEntity.Entity;
-            }
+            return await _nonQueryDataService.Create(entity);
         }
 
         public async Task<bool> Delete(DateTime datec, int iddocteur, int iddossierpatient)
@@ -38,12 +35,25 @@ namespace Clinique.EntityFramework.Services
             }
         }
 
+        public async Task<bool> Delete(int id)
+        {
+            return await _nonQueryDataService.Delete(id);
+        }
+
         public async Task<Consultation> Get(DateTime datec, int iddocteur, int iddossierpatient)
         {
             using (CliniqueDbContext context = _contextFactory.CreateDbContext())
             {
                 Consultation entity = await context.Set<Consultation>().FirstOrDefaultAsync((e) => e.IdDocteur == iddocteur && e.IdDossierpatient == iddossierpatient && e.DateC == datec);
                 return entity;
+            }
+        }
+
+        public async Task<Consultation> Get(int id)
+        {
+            using(CliniqueDbContext context = _contextFactory.CreateDbContext())
+            {
+                return await context.Set<Consultation>().FirstOrDefaultAsync((e) => e.Id == id);
             }
         }
 
@@ -68,6 +78,11 @@ namespace Clinique.EntityFramework.Services
 
                 return entity;
             }
+        }
+
+        public async Task<Consultation> Update(int id, Consultation entity)
+        {
+            return await _nonQueryDataService.Update(id, entity);
         }
     }
 }

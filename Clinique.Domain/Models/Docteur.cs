@@ -23,19 +23,19 @@ namespace Clinique.Domain.Models
         public virtual ICollection<Consultation> Consultations { get;set;}
         public virtual ICollection<Dossierpatient> Dossierspatients { get; set; }
 
-        //public Docteur()
-        //{
+        public Docteur()
+        {
 
-        //}
+        }
 
-        //public Docteur(string nomM, string prenomM, string ville, string adresse, Niveau niveau, int nbrPatients)
-        //{
-        //    NomM = nomM;
-        //    PrenomM = prenomM;
-        //    Ville = ville;
-        //    Adresse = adresse;
-        //    Niveau = niveau;
-        //    NbrPatients = nbrPatients;
-        //}
+        public Docteur(string nomM, string prenomM, string ville, string adresse, Niveau niveau, int nbrPatients)
+        {
+            NomM = nomM;
+            PrenomM = prenomM;
+            Ville = ville;
+            Adresse = adresse;
+            Niveau = niveau;
+            NbrPatients = nbrPatients;
+        }
     }
 }

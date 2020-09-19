@@ -15,15 +15,15 @@ namespace Clinique.Domain.Models
 
         public virtual ICollection<Medicament> Medicaments { get;set;}
 
-        //public Categorie()
-        //{
+        public Categorie()
+        {
 
-        //}
+        }
 
-        //public Categorie(string nom, string description)
-        //{
-        //    Nom = nom;
-        //    Description = description;
-        //}
+        public Categorie(string nom, string description)
+        {
+            Nom = nom;
+            Description = description;
+        }
     }
 }

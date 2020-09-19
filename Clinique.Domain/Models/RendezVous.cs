@@ -17,15 +17,15 @@ namespace Clinique.Domain.Models
         public int IdDossierpatient { get; set; }
         //public Dossierpatient Dossierpatient { get; set; }
 
-        //public RendezVous()
-        //{
+        public RendezVous()
+        {
 
-        //}
+        }
 
-        //public RendezVous(DateTime dateRdv, double duree)
-        //{
-        //    DateRdv = dateRdv;
-        //    Duree = duree;
-        //}
+        public RendezVous(DateTime dateRdv, double duree)
+        {
+            DateRdv = dateRdv;
+            Duree = duree;
+        }
     }
 }

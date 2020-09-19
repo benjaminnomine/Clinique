@@ -18,14 +18,14 @@ namespace Clinique.Domain.Models
         public int IdMedicament { get; set; }
         public Medicament Medicament { get;set;}
 
-        //public Ordonnancemedicament()
-        //{
+        public Ordonnancemedicament()
+        {
 
-        //}
+        }
 
-        //public Ordonnancemedicament(int nbboites)
-        //{
-        //    NbBoites = nbboites;
-        //}
+        public Ordonnancemedicament(int nbboites)
+        {
+            NbBoites = nbboites;
+        }
     }
 }

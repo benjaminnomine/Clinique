@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clinique.Domain", "Clinique.Domain\Clinique.Domain.csproj", "{629A552B-04DB-4001-9457-DCE382012332}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinique.Domain", "Clinique.Domain\Clinique.Domain.csproj", "{629A552B-04DB-4001-9457-DCE382012332}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clinique.EntityFramework", "Clinique.EntityFramework\Clinique.EntityFramework.csproj", "{C6BC8FCA-C0BD-4774-A72E-BE02D55D4A8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinique.EntityFramework", "Clinique.EntityFramework\Clinique.EntityFramework.csproj", "{C6BC8FCA-C0BD-4774-A72E-BE02D55D4A8C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clinique.AspNetCore", "Clinique.AspNetCore\Clinique.AspNetCore.csproj", "{1AA9A44A-4CA9-4C9F-90B6-ECBC39179938}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinique.AspNetCore", "Clinique.AspNetCore\Clinique.AspNetCore.csproj", "{1AA9A44A-4CA9-4C9F-90B6-ECBC39179938}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{CF7F2C05-5223-426C-AA37-6A7E4C0DF0FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{CF7F2C05-5223-426C-AA37-6A7E4C0DF0FC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clinique.Ressources", "Clinique.Ressources\Clinique.Ressources.csproj", "{5949DCFD-B706-4632-826A-4020DE62D2BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{CF7F2C05-5223-426C-AA37-6A7E4C0DF0FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF7F2C05-5223-426C-AA37-6A7E4C0DF0FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF7F2C05-5223-426C-AA37-6A7E4C0DF0FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5949DCFD-B706-4632-826A-4020DE62D2BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5949DCFD-B706-4632-826A-4020DE62D2BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5949DCFD-B706-4632-826A-4020DE62D2BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5949DCFD-B706-4632-826A-4020DE62D2BF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

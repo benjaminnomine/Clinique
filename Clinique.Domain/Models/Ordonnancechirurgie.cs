@@ -16,15 +16,15 @@ namespace Clinique.Domain.Models
         public int IdOrdonnance { get;set;}
         public Ordonnance Ordonnance { get; set; }
 
-        //public Ordonnancechirurgie()
-        //{
+        public Ordonnancechirurgie()
+        {
 
-        //}
+        }
 
-        //public Ordonnancechirurgie(int rang, string nomChirurgie)
-        //{
-        //    Rang = rang;
-        //    NomChirurgie = nomChirurgie;
-        //}
+        public Ordonnancechirurgie(int rang, string nomChirurgie)
+        {
+            Rang = rang;
+            NomChirurgie = nomChirurgie;
+        }
     }
 }

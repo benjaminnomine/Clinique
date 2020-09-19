@@ -18,15 +18,15 @@ namespace Clinique.Domain.Models
 
         public virtual ICollection<Ordonnancemedicament> Ordonnancemedicaments { get;set;}
 
-        //public Medicament()
-        //{
+        public Medicament()
+        {
 
-        //}
+        }
 
-        //public Medicament(string nomMed, double prix = 0)
-        //{
-        //    NomMed = nomMed;
-        //    Prix = prix;
-        //}
+        public Medicament(string nomMed, double prix = 0)
+        {
+            NomMed = nomMed;
+            Prix = prix;
+        }
     }
 }

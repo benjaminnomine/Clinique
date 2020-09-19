@@ -12,17 +12,18 @@ namespace Clinique.AspNetCore.Controllers
 {
     public class OrdonnancemedicamentsController : Controller
     {
-        private readonly CliniqueDbContext _context;
+        private readonly CliniqueDbContextFactory _contextFactory;
 
-        public OrdonnancemedicamentsController(CliniqueDbContext context)
+        public OrdonnancemedicamentsController(CliniqueDbContextFactory contextFactory)
         {
-            _context = context;
+            _contextFactory = contextFactory;
         }
 
         // GET: Ordonnancemedicaments
         public async Task<IActionResult> Index()
         {
-            var cliniqueDbContext = _context.Ordonnancemedicaments.Include(o => o.Medicament).Include(o => o.Ordonnance);
+            var cliniqueDbContext = _contextFactory.CreateDbContext()
+                .Ordonnancemedicaments.Include(o => o.Medicament).Include(o => o.Ordonnance);
             return View(await cliniqueDbContext.ToListAsync());
         }
 
@@ -34,7 +35,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var ordonnancemedicament = await _context.Ordonnancemedicaments
+            var ordonnancemedicament = await _contextFactory.CreateDbContext().Ordonnancemedicaments
                 .Include(o => o.Medicament)
                 .Include(o => o.Ordonnance)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -49,8 +50,8 @@ namespace Clinique.AspNetCore.Controllers
         // GET: Ordonnancemedicaments/Create
         public IActionResult Create()
         {
-            ViewData["IdMedicament"] = new SelectList(_context.Medicaments, "Id", "Id");
-            ViewData["IdOrdonnance"] = new SelectList(_context.Ordonnances, "Id", "Id");
+            ViewData["IdMedicament"] = new SelectList(_contextFactory.CreateDbContext().Medicaments, "Id", "Id");
+            ViewData["IdOrdonnance"] = new SelectList(_contextFactory.CreateDbContext().Ordonnances, "Id", "Id");
             return View();
         }
 
@@ -63,12 +64,12 @@ namespace Clinique.AspNetCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(ordonnancemedicament);
-                await _context.SaveChangesAsync();
+                _contextFactory.CreateDbContext().Add(ordonnancemedicament);
+                await _contextFactory.CreateDbContext().SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdMedicament"] = new SelectList(_context.Medicaments, "Id", "Id", ordonnancemedicament.IdMedicament);
-            ViewData["IdOrdonnance"] = new SelectList(_context.Ordonnances, "Id", "Id", ordonnancemedicament.IdOrdonnance);
+            ViewData["IdMedicament"] = new SelectList(_contextFactory.CreateDbContext().Medicaments, "Id", "Id", ordonnancemedicament.IdMedicament);
+            ViewData["IdOrdonnance"] = new SelectList(_contextFactory.CreateDbContext().Ordonnances, "Id", "Id", ordonnancemedicament.IdOrdonnance);
             return View(ordonnancemedicament);
         }
 
@@ -80,13 +81,13 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var ordonnancemedicament = await _context.Ordonnancemedicaments.FindAsync(id);
+            var ordonnancemedicament = await _contextFactory.CreateDbContext().Ordonnancemedicaments.FindAsync(id);
             if (ordonnancemedicament == null)
             {
                 return NotFound();
             }
-            ViewData["IdMedicament"] = new SelectList(_context.Medicaments, "Id", "Id", ordonnancemedicament.IdMedicament);
-            ViewData["IdOrdonnance"] = new SelectList(_context.Ordonnances, "Id", "Id", ordonnancemedicament.IdOrdonnance);
+            ViewData["IdMedicament"] = new SelectList(_contextFactory.CreateDbContext().Medicaments, "Id", "Id", ordonnancemedicament.IdMedicament);
+            ViewData["IdOrdonnance"] = new SelectList(_contextFactory.CreateDbContext().Ordonnances, "Id", "Id", ordonnancemedicament.IdOrdonnance);
             return View(ordonnancemedicament);
         }
 
@@ -106,8 +107,8 @@ namespace Clinique.AspNetCore.Controllers
             {
                 try
                 {
-                    _context.Update(ordonnancemedicament);
-                    await _context.SaveChangesAsync();
+                    _contextFactory.CreateDbContext().Update(ordonnancemedicament);
+                    await _contextFactory.CreateDbContext().SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -122,8 +123,8 @@ namespace Clinique.AspNetCore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdMedicament"] = new SelectList(_context.Medicaments, "Id", "Id", ordonnancemedicament.IdMedicament);
-            ViewData["IdOrdonnance"] = new SelectList(_context.Ordonnances, "Id", "Id", ordonnancemedicament.IdOrdonnance);
+            ViewData["IdMedicament"] = new SelectList(_contextFactory.CreateDbContext().Medicaments, "Id", "Id", ordonnancemedicament.IdMedicament);
+            ViewData["IdOrdonnance"] = new SelectList(_contextFactory.CreateDbContext().Ordonnances, "Id", "Id", ordonnancemedicament.IdOrdonnance);
             return View(ordonnancemedicament);
         }
 
@@ -135,7 +136,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var ordonnancemedicament = await _context.Ordonnancemedicaments
+            var ordonnancemedicament = await _contextFactory.CreateDbContext().Ordonnancemedicaments
                 .Include(o => o.Medicament)
                 .Include(o => o.Ordonnance)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -152,15 +153,15 @@ namespace Clinique.AspNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ordonnancemedicament = await _context.Ordonnancemedicaments.FindAsync(id);
-            _context.Ordonnancemedicaments.Remove(ordonnancemedicament);
-            await _context.SaveChangesAsync();
+            var ordonnancemedicament = await _contextFactory.CreateDbContext().Ordonnancemedicaments.FindAsync(id);
+            _contextFactory.CreateDbContext().Ordonnancemedicaments.Remove(ordonnancemedicament);
+            await _contextFactory.CreateDbContext().SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool OrdonnancemedicamentExists(int id)
         {
-            return _context.Ordonnancemedicaments.Any(e => e.Id == id);
+            return _contextFactory.CreateDbContext().Ordonnancemedicaments.Any(e => e.Id == id);
         }
     }
 }

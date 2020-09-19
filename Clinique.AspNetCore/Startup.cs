@@ -8,6 +8,8 @@ using Clinique.EntityFramework;
 using Clinique.EntityFramework.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,8 +29,24 @@ namespace Clinique.AspNetCore
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSession();
-            services.AddSingleton<CliniqueDbContextFactory>();
+
+            string connexionString = Configuration.GetConnectionString("default");
+
+            services.AddDbContext<CliniqueDbContext>(o => o.UseSqlServer(connexionString));
+            services.AddSingleton<CliniqueDbContextFactory>(new CliniqueDbContextFactory(connexionString));
+            services.AddSingleton<IAuthentificationService, AuthentificationService>();
+            services.AddSingleton<IAccountService, AccountService>();
+            services.AddSingleton<IDataService<Utilisateur>, AccountService>();
+            services.AddSingleton<IDataService<Consultation>, ConsultationDataService>();
+
+
+
+
+            services.AddSingleton<IPasswordHasher<Utilisateur>, PasswordHasher<Utilisateur>>();
+
+
             services.AddControllersWithViews();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
