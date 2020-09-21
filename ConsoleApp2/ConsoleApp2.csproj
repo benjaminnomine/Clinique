@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Clinique.AspNetCore\Clinique.AspNetCore.csproj" />
     <ProjectReference Include="..\Clinique.Domain\Clinique.Domain.csproj" />
     <ProjectReference Include="..\Clinique.EntityFramework\Clinique.EntityFramework.csproj" />
     <ProjectReference Include="..\Clinique.Ressources\Clinique.Ressources.csproj" />

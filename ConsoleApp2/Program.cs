@@ -1,5 +1,4 @@
 ﻿using Clinique.Domain.Models;
-using Clinique.EntityFramework;
 using Clinique.Domain.Enums;
 using System;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -7,12 +6,16 @@ using Clinique.EntityFramework.Services;
 using Clinique.Domain.Services;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Clinique.AspNetCore.Models;
+using Clinique.Domain.Services.API;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleApp2
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             //IDataService<Specialite> dataService = new GenericDataService<Specialite>(new CliniqueDbContextFactory("Data Source=(localdb)\\MSSQLlocalDB;Integrated Security=True;Database=Clinique;"));
             //dataService.Create(new Specialite { Titre = "Cardiologie", Description = "Traite les troubles du cœur" }).Wait();
@@ -115,6 +118,18 @@ namespace ConsoleApp2
             //dataServiceDocteur.Create(new Docteur { NomM = "Dillard", PrenomM = "Eaton", IdSpecialite = 10, Ville = "Trois-Rivière", Adresse = "636-1960 Lacus, St.", Niveau = Niveau.Etudiant, NbrPatients = 0 }).Wait();
             //dataServiceDocteur.Create(new Docteur { NomM = "Stout", PrenomM = "Tanisha", IdSpecialite = 4, Ville = "Richelieu", Adresse = "P.O. Box 111, 3292 Ut St.", Niveau = Niveau.Etudiant, NbrPatients = 0 }).Wait();
             //dataServiceDocteur.Create(new Docteur { NomM = "Richardson", PrenomM = "Dean", IdSpecialite = 5, Ville = "Verdun", Adresse = "840-1897 Nulla St.", Niveau = Niveau.Etudiant, NbrPatients = 0 }).Wait();
+
+            ICoronavirusCountryService _coronavirusCountryService = new APICoronavirusCountryService();
+            CoronavirusResults coronavirusResults = new CoronavirusResults(_coronavirusCountryService);
+            await coronavirusResults.Load();
+            Task.Run(() => {
+                for (var i = 0; i < 10; i++)
+                {
+                    Console.WriteLine(coronavirusResults.CoronavirusCountryNames[i]);
+                    Console.WriteLine(coronavirusResults.CoronavirusCountryCaseCounts[i]);
+                    Console.WriteLine("---------");
+                }
+            }).Wait();
 
         }
     }

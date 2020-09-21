@@ -6,8 +6,8 @@ namespace Clinique.Domain.Services
     [Serializable]
     internal class InvalidPasswordException : Exception
     {
-        private string username;
-        private string password;
+        private readonly string Username;
+        private readonly string Password;
 
         public InvalidPasswordException()
         {
@@ -19,8 +19,8 @@ namespace Clinique.Domain.Services
 
         public InvalidPasswordException(string username, string password)
         {
-            this.username = username;
-            this.password = password;
+            Username = username;
+            Password = password;
         }
 
         public InvalidPasswordException(string message, Exception innerException) : base(message, innerException)

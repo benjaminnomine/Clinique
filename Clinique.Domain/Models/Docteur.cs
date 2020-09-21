@@ -8,8 +8,11 @@ namespace Clinique.Domain.Models
 {
     public class Docteur : DomainObject
     {
+        [Display(Name = "Matricule")]
         public int Matricule { get; set; }
+        [Display(Name = "Nom")]
         public string NomM { get; set; }
+        [Display(Name = "Prénom")]
         public string PrenomM { get; set; }
         [ForeignKey("Specialite")]
         public int IdSpecialite { get; set; }

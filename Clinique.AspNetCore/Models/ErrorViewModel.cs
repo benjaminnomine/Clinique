@@ -1,5 +1,3 @@
-using System;
-
 namespace Clinique.AspNetCore.Models
 {
     public class ErrorViewModel

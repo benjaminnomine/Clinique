@@ -11,7 +11,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinique.AspNetCore", "Clin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{CF7F2C05-5223-426C-AA37-6A7E4C0DF0FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clinique.Ressources", "Clinique.Ressources\Clinique.Ressources.csproj", "{5949DCFD-B706-4632-826A-4020DE62D2BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinique.Ressources", "Clinique.Ressources\Clinique.Ressources.csproj", "{5949DCFD-B706-4632-826A-4020DE62D2BF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8D8AED0A-3C5B-483A-9D31-A8CE0EED30F7}"
+	ProjectSection(SolutionItems) = preProject
+		.a11yrc = .a11yrc
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

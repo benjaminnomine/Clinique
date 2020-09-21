@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Clinique.Domain.Models;
+using Clinique.EntityFramework;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Clinique.Domain.Models;
-using Clinique.EntityFramework;
 
 namespace Clinique.AspNetCore.Controllers
 {

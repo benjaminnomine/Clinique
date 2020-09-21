@@ -1,21 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Clinique.AspNetCore.Models;
+using Clinique.AspNetCore.State;
+using Clinique.Domain.Enums;
+using Clinique.Domain.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Clinique.AspNetCore.Models;
+using Microsoft.Extensions.Localization;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace Clinique.AspNetCore.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IAuthenticator _authenticator;
+        private readonly IStringLocalizer<HomeController> _localizer;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IAuthenticator authenticator, IStringLocalizer<HomeController> localizer)
         {
-            _logger = logger;
+            _authenticator = authenticator;
+            _localizer = localizer;
         }
 
         public IActionResult Index()
@@ -24,6 +27,28 @@ namespace Clinique.AspNetCore.Controllers
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Authentifier(Utilisateur utilisateur)
+        {
+            if(await _authenticator.Login(utilisateur.Name, utilisateur.HashPassword))
+            {
+                HttpContext.Session.SetString("nom", utilisateur.Name);
+                if(utilisateur.TypeCompte == TypeCompte.Docteur)
+                {
+                    return RedirectToAction("", "");
+                }
+                else if(utilisateur.TypeCompte == TypeCompte.Secretaire)
+                {
+                    return RedirectToAction("","");
+                }
+            }
+            return View("Index",utilisateur);
+        }
+
+        public IActionResult Register()
         {
             return View();
         }
