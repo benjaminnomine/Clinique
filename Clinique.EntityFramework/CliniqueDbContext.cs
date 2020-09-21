@@ -1,4 +1,5 @@
 ﻿using Clinique.Domain.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,8 @@ using System.Text;
 
 namespace Clinique.EntityFramework
 {
-    public class CliniqueDbContext : DbContext
+    public class CliniqueDbContext : IdentityDbContext
+    //public class CliniqueDbContext : DbContext
     {
         public DbSet<Categorie> Categories { get; set; }
         public DbSet<Consultation> Consultations { get; set; }
@@ -18,21 +20,24 @@ namespace Clinique.EntityFramework
         public DbSet<Ordonnancemedicament> Ordonnancemedicaments { get; set; }
         public DbSet<Specialite> Specialites { get; set; }
         public DbSet<RendezVous> RendezVous { get;set;}
-        public DbSet<Utilisateur> Utilisateurs { get;set;}
+        public DbSet<CliniqueAspNetCoreUser> CliniqueAspNetCoreUsers { get; set; }
+        //public DbSet<Utilisateur> Utilisateurs { get;set;}
 
         public CliniqueDbContext(DbContextOptions options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<Docteur>().Property(o => o.Niveau).HasConversion<string>();
             modelBuilder.Entity<Dossierpatient>().Property(o => o.Genre).HasConversion<string>();
             modelBuilder.Entity<Ordonnance>().Property(o => o.TypeO).HasConversion<string>();
-            modelBuilder.Entity<Utilisateur>().Property(u => u.TypeCompte).HasConversion<string>();
+            //modelBuilder.Entity<Utilisateur>().Property(u => u.TypeCompte).HasConversion<string>();
             modelBuilder.Entity<Consultation>().HasAlternateKey(c => new { c.IdDocteur, c.IdDossierpatient, c.DateC});
             //modelBuilder.Entity<Consultation>().HasOne(c => c.Docteur).WithMany(d => d.Consultations).HasForeignKey(c => c.IdDocteur).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Consultation>().HasOne<Docteur>().WithMany(d => d.Consultations).HasForeignKey(c => c.IdDocteur).OnDelete(DeleteBehavior.NoAction);
             //modelBuilder.Entity<Consultation>().HasOne(c => c.Dossierpatient).WithMany(d => d.Consultations).HasForeignKey(c => c.Dossierpatient).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Consultation>().HasOne<Dossierpatient>().WithMany(d => d.Consultations).HasForeignKey(c => c.IdDossierpatient).OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<CliniqueAspNetCoreUser>().Property(c => c.TypeCompte).HasConversion<string>();
 
             modelBuilder.Entity<RendezVous>().HasAlternateKey(r => new { r.DateRdv, r.IdDocteur, r.IdDossierpatient});
             modelBuilder.Entity<RendezVous>().HasOne<Docteur>().WithMany(d => d.RendezVous).HasForeignKey(r => r.IdDocteur).OnDelete(DeleteBehavior.NoAction);

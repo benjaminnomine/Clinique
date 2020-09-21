@@ -1,9 +1,11 @@
 using Clinique.AspNetCore.Controllers;
-using Clinique.AspNetCore.State;
+using Clinique.AspNetCore.Data;
+
 using Clinique.Domain.Models;
 using Clinique.Domain.Services;
 using Clinique.Domain.Services.API;
 using Clinique.EntityFramework;
+using Clinique.EntityFramework.Seed;
 using Clinique.EntityFramework.Services;
 using Clinique.Ressources;
 using Microsoft.AspNetCore.Builder;
@@ -34,23 +36,21 @@ namespace Clinique.AspNetCore
 
             string connexionString = Configuration.GetConnectionString("default");
 
+
             services.AddDbContext<CliniqueDbContext>(o => o.UseSqlServer(connexionString));
             services.AddSingleton<CliniqueDbContextFactory>(new CliniqueDbContextFactory(connexionString));
-            services.AddSingleton<IAuthentificationService, AuthentificationService>();
-            services.AddSingleton<IAccountService, AccountService>();
-            services.AddSingleton<IDataService<Utilisateur>, AccountService>();
+
             services.AddSingleton<IDataService<Consultation>, ConsultationDataService>();
-            services.AddSingleton<IAuthenticator, Authenticator>();
+
             services.AddSingleton<ICoronavirusCountryService, APICoronavirusCountryService>();
             services.AddSingleton<CoronavirusController>();
-
-            services.AddSingleton<IPasswordHasher<Utilisateur>, PasswordHasher<Utilisateur>>();
 
             services.AddLocalization(o => o.ResourcesPath = "Ressources" );
 
             services.AddMvc()
                 .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
+
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var cultures = new List<CultureInfo> {
@@ -64,6 +64,8 @@ namespace Clinique.AspNetCore
 
             services.AddRazorPages();
             services.AddControllersWithViews();
+
+            SeedData.InsertData();
 
         }
 
@@ -88,6 +90,7 @@ namespace Clinique.AspNetCore
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

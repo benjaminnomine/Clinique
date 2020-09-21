@@ -1,5 +1,5 @@
 ﻿using Clinique.AspNetCore.Models;
-using Clinique.AspNetCore.State;
+
 using Clinique.Domain.Enums;
 using Clinique.Domain.Models;
 using Microsoft.AspNetCore.Http;
@@ -12,12 +12,13 @@ namespace Clinique.AspNetCore.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IAuthenticator _authenticator;
+        //private readonly IAuthenticator _authenticator;
         private readonly IStringLocalizer<HomeController> _localizer;
 
-        public HomeController(IAuthenticator authenticator, IStringLocalizer<HomeController> localizer)
+        //public HomeController(IAuthenticator authenticator, IStringLocalizer<HomeController> localizer)
+        public HomeController(IStringLocalizer<HomeController> localizer)
         {
-            _authenticator = authenticator;
+            //_authenticator = authenticator;
             _localizer = localizer;
         }
 
@@ -30,23 +31,23 @@ namespace Clinique.AspNetCore.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public async Task<IActionResult> Authentifier(Utilisateur utilisateur)
-        {
-            if(await _authenticator.Login(utilisateur.Name, utilisateur.HashPassword))
-            {
-                HttpContext.Session.SetString("nom", utilisateur.Name);
-                if(utilisateur.TypeCompte == TypeCompte.Docteur)
-                {
-                    return RedirectToAction("", "");
-                }
-                else if(utilisateur.TypeCompte == TypeCompte.Secretaire)
-                {
-                    return RedirectToAction("","");
-                }
-            }
-            return View("Index",utilisateur);
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> Authentifier(Utilisateur utilisateur)
+        //{
+        //    if(await _authenticator.Login(utilisateur.Name, utilisateur.HashPassword))
+        //    {
+        //        HttpContext.Session.SetString("nom", utilisateur.Name);
+        //        if(utilisateur.TypeCompte == TypeCompte.Docteur)
+        //        {
+        //            return RedirectToAction("", "");
+        //        }
+        //        else if(utilisateur.TypeCompte == TypeCompte.Secretaire)
+        //        {
+        //            return RedirectToAction("","");
+        //        }
+        //    }
+        //    return View("Index",utilisateur);
+        //}
 
         public IActionResult Register()
         {

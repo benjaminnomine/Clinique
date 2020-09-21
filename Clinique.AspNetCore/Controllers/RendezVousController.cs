@@ -2,6 +2,7 @@
 using Clinique.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -145,6 +146,12 @@ namespace Clinique.AspNetCore.Controllers
         private bool RendezVousExists(int id)
         {
             return _contextFactory.CreateDbContext().RendezVous.Any(e => e.Id == id);
+        }
+
+        public async Task<ActionResult> FullCalendarAsync()
+        {
+            List<RendezVous> fullCalendar = await _contextFactory.CreateDbContext().RendezVous.ToListAsync();
+            return Json(fullCalendar);
         }
     }
 }

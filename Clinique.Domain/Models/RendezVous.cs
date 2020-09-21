@@ -9,6 +9,7 @@ namespace Clinique.Domain.Models
     {
         public DateTime DateRdv { get; set; }
         public double Duree { get; set; }
+        public DateTime DateFin { get; set; }
 
         //[ForeignKey("Docteur")]
         public int IdDocteur { get;set;}
@@ -26,6 +27,7 @@ namespace Clinique.Domain.Models
         {
             DateRdv = dateRdv;
             Duree = duree;
+            DateFin = dateRdv.AddHours(duree);
         }
     }
 }
