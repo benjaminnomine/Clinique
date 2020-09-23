@@ -2,9 +2,11 @@
 
 using Clinique.Domain.Enums;
 using Clinique.Domain.Models;
+using Clinique.Domain.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
@@ -14,42 +16,23 @@ namespace Clinique.AspNetCore.Controllers
     {
         //private readonly IAuthenticator _authenticator;
         private readonly IStringLocalizer<HomeController> _localizer;
+        private readonly ICoronavirusCountryService _coronavirusCountryService;
 
         //public HomeController(IAuthenticator authenticator, IStringLocalizer<HomeController> localizer)
-        public HomeController(IStringLocalizer<HomeController> localizer)
+        public HomeController(IStringLocalizer<HomeController> localizer, ICoronavirusCountryService coronavirusCountryService)
         {
             //_authenticator = authenticator;
             _localizer = localizer;
+            _coronavirusCountryService = coronavirusCountryService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
-            return View();
+            CovidCountry country = await _coronavirusCountryService.GetHistoryCountry("CANADA");
+            return View(country);
         }
 
         public IActionResult Privacy()
-        {
-            return View();
-        }
-        //[HttpPost]
-        //public async Task<IActionResult> Authentifier(Utilisateur utilisateur)
-        //{
-        //    if(await _authenticator.Login(utilisateur.Name, utilisateur.HashPassword))
-        //    {
-        //        HttpContext.Session.SetString("nom", utilisateur.Name);
-        //        if(utilisateur.TypeCompte == TypeCompte.Docteur)
-        //        {
-        //            return RedirectToAction("", "");
-        //        }
-        //        else if(utilisateur.TypeCompte == TypeCompte.Secretaire)
-        //        {
-        //            return RedirectToAction("","");
-        //        }
-        //    }
-        //    return View("Index",utilisateur);
-        //}
-
-        public IActionResult Register()
         {
             return View();
         }

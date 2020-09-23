@@ -1,35 +1,122 @@
-﻿
+﻿@model Clinique.Domain.Models.CovidCountry
 @{
-    ViewData["Title"] = "Home Page";
+	ViewData["Title"] = "Home Page";
+	var XValues = @Html.Raw(Json.Serialize(Model.Dates));
+	var YValues1 = @Html.Raw(Json.Serialize(Model.Cases));
+	var YValues2 = @Html.Raw(Json.Serialize(Model.Deaths));
+	var DataTitle = @Html.Raw(Json.Serialize(Model.CountryName));
+	var MaxValue = Html.Raw(Json.Serialize(Model.Cases.ToArray()[Model.Cases.Count() - 1]));
+}
+	<div class="row">
+		<div class="card col-6">
+			<div class="card-body">
+				<canvas id="chart">
+				</canvas>
+			</div>
+		</div>
+		<div class="col-4 card">
+            <div class="card-body">
+                <a class="twitter-timeline" height="400px" href="https://twitter.com/Santepub_Mtl?ref_src=twsrc%5Etfw">Santé publique Montréal</a>
+            </div>
+		</div>
+	</div>
+@section Scripts {
+	<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+	<script>
+		var ctx = document.getElementById('chart');
+		var chart = new Chart(ctx, {
+				type: 'line',
+				data: {
+					labels: @XValues,
+					datasets: [{
+						label: 'Nombre de cas',
+						borderColor: 'rgba(255, 99, 132)',
+						backgroundColor: 'rgba(255, 99, 132, 0.2)',
+						fill: false,
+						data: @YValues1,
+						yAxisID: 'y-axis-1',
+					}, {
+						label: 'Nombre de morts',
+						borderColor: 'rgba(54, 162, 235)',
+						backgroundColor: 'rgba(54, 162, 235, 0.2)',
+						fill: false,
+						data: @YValues2,
+						yAxisID: 'y-axis-2'
+					}]
+				},
+				options: {
+					responsive: true,
+					hoverMode: 'index',
+					stacked: false,
+					title: {
+						display: true,
+						text: @DataTitle,
+					},
+					scales: {
+						yAxes: [{
+							type: 'linear',
+							display: true,
+							position: 'left',
+							id: 'y-axis-1',
+							ticks: {
+								beginAtZero: true,
+
+							}
+						}, {
+							type: 'linear',
+							display: false,
+							position: 'right',
+							id: 'y-axis-2',
+							ticks: {
+								beginAtZero: true,
+								max: @MaxValue,
+							},
+							gridLines: {
+								drawOnChartArea: false,
+							},
+						}],
+					}
+				}
+			});
+	</script>
 }
 
-@*<h4>Identification utilisateur :</h4>
-
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Authentifier">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <div class="form-group">
-                    <label asp-for="Name" class="control-label"></label>
-                    <input asp-for="Name" class="form-control" />
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="HashPassword" class="control-label"></label>
-                    <input asp-for="HashPassword" class="form-control" />
-                    <span asp-validation-for="HashPassword" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Authentifier" class="btn btn-primary" />
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <a asp-action="Register" asp-controller="Home">Créez votre compte</a>*@
-
-<div class="card col-8 justify-content-center">
-    <div class="card-body">
-        Test
-    </div>
-</div>
+@*options = {
+	  aspectRatio: aspectRatio(1, 1.2, 2),
+	tooltips: {
+	  mode: "index",
+	  intersect: false
+	},
+	responsive: true,
+	scales: {
+	  xAxes: [
+		{
+		  gridLines: {
+			display: true
+		  },
+		  offset: true,
+		  stacked: false,
+		  bounds: 'data',
+		  type: "time",
+		  time: {
+			// unit: "day",
+			tooltipFormat: "YYYY-MM-DD",
+			displayFormats: {
+			  millisecond: "HH:mm:ss.SSS",
+			  second: "HH:mm:ss",
+			  minute: "HH:mm",
+			  hour: "HH",
+			  day: "MMM DD"
+			}
+		  },
+		  ticks: {
+			fontColor: '#999',
+			autoSkip: true,
+			autoSkipPadding: 50,
+			padding: 0,
+			lineHeight: 1,
+			major: {
+							  enabled: true,
+			  fontStyle: 'bold',
+						},
+		  },*@

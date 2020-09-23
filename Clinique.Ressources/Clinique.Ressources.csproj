@@ -9,9 +9,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Ressources\Controllers\" />
-    <Folder Include="Ressources\Models\" />
-    <Folder Include="Ressources\Views\Home\" />
+    <Folder Include="Resources\Controllers\" />
+    <Folder Include="Resources\Models\" />
+    <Folder Include="Resources\Views\Home\" />
   </ItemGroup>
 
 </Project>

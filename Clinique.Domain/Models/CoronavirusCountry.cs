@@ -8,6 +8,7 @@ namespace Clinique.Domain.Models
     {
         public string CountryName { get; set; }
         public int CaseCount { get; set; }
+        public int DeathCount { get; set; }
         public string FlagUri { get; set; }
     }
 }

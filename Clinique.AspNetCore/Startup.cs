@@ -7,7 +7,7 @@ using Clinique.Domain.Services.API;
 using Clinique.EntityFramework;
 using Clinique.EntityFramework.Seed;
 using Clinique.EntityFramework.Services;
-using Clinique.Ressources;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -44,8 +44,12 @@ namespace Clinique.AspNetCore
 
             services.AddSingleton<ICoronavirusCountryService, APICoronavirusCountryService>();
             services.AddSingleton<CoronavirusController>();
+            services.AddSingleton<HomeController>();
 
-            services.AddLocalization(o => o.ResourcesPath = "Ressources" );
+            services.AddDefaultIdentity<CliniqueAspNetCoreUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<CliniqueDbContext>();
+
+            services.AddLocalization(o => o.ResourcesPath = "Resources" );
 
             services.AddMvc()
                 .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
@@ -64,8 +68,6 @@ namespace Clinique.AspNetCore
 
             services.AddRazorPages();
             services.AddControllersWithViews();
-
-            SeedData.InsertData();
 
         }
 
