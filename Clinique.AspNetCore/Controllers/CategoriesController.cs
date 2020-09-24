@@ -55,8 +55,9 @@ namespace Clinique.AspNetCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _contextFactory.CreateDbContext().Add(categorie);
-                await _contextFactory.CreateDbContext().SaveChangesAsync();
+                CliniqueDbContext context = _contextFactory.CreateDbContext();
+                context.Add(categorie);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(categorie);
@@ -94,8 +95,9 @@ namespace Clinique.AspNetCore.Controllers
             {
                 try
                 {
-                    _contextFactory.CreateDbContext().Update(categorie);
-                    await _contextFactory.CreateDbContext().SaveChangesAsync();
+                    CliniqueDbContext context = _contextFactory.CreateDbContext();
+                    context.Update(categorie);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -136,9 +138,10 @@ namespace Clinique.AspNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var categorie = await _contextFactory.CreateDbContext().Categories.FindAsync(id);
-            _contextFactory.CreateDbContext().Categories.Remove(categorie);
-            await _contextFactory.CreateDbContext().SaveChangesAsync();
+            CliniqueDbContext context = _contextFactory.CreateDbContext();
+            var categorie = await context.Categories.FindAsync(id);
+            context.Categories.Remove(categorie);
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

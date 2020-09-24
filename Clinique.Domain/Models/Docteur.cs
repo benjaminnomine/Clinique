@@ -12,14 +12,19 @@ namespace Clinique.Domain.Models
         public int Matricule { get; set; }
         [Display(Name = "Nom")]
         public string NomM { get; set; }
-        [Display(Name = "Prénom")]
+        [Display(Name = "Prenom")]
         public string PrenomM { get; set; }
         [ForeignKey("Specialite")]
         public int IdSpecialite { get; set; }
+        [Display(Name = "Specialite")]
         public Specialite Specialite { get; set; }
+        [Display(Name = "Ville")]
         public string Ville { get; set; }
+        [Display(Name = "Adresse")]
         public string Adresse { get; set; }
+        [Display(Name = "Niveau")]
         public Niveau Niveau { get; set; }
+        [Display(Name = "Nombre de patients")]
         public int NbrPatients { get; set; }
 
         public virtual ICollection<RendezVous> RendezVous { get;set;}

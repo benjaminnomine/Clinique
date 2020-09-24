@@ -9,11 +9,20 @@ namespace Clinique.Domain.Models
 
     public class Dossierpatient : DomainObject
     {
+        [Display(Name ="Nom")]
         public string NomP { get; set; }
+        [Display(Name = "Prenom")]
         public string PrenomP { get; set; }
+        [Display(Name = "Genre")]
         public Genre Genre { get; set; }
+        [Display(Name = "Numero Assurance")]
         public int NumAS { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
+        [Display(Name = "Date Naissance")]
         public DateTime DateNaiss { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
         public DateTime DateC { get; set; }
         [ForeignKey("Docteur")]
         public int IdDocteur { get; set; }

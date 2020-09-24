@@ -1,4 +1,8 @@
-﻿@model Clinique.Domain.Models.CovidCountry
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@model Clinique.Domain.Models.CovidCountry
+
+@inject IViewLocalizer localizer
+
 @{
 	ViewData["Title"] = "Home Page";
 	var XValues = @Html.Raw(Json.Serialize(Model.Dates));
@@ -7,19 +11,52 @@
 	var DataTitle = @Html.Raw(Json.Serialize(Model.CountryName));
 	var MaxValue = Html.Raw(Json.Serialize(Model.Cases.ToArray()[Model.Cases.Count() - 1]));
 }
-	<div class="row">
-		<div class="card col-6">
-			<div class="card-body">
-				<canvas id="chart">
-				</canvas>
-			</div>
-		</div>
-		<div class="col-4 card">
-            <div class="card-body">
-                <a class="twitter-timeline" height="400px" href="https://twitter.com/Santepub_Mtl?ref_src=twsrc%5Etfw">Santé publique Montréal</a>
+
+
+<div class="container-fluid justify-content-center">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="row justify-content-around pb-5">
+            <div class="col-6 col-md-3 card alert alert-primary p-1">
+                <div class="card-body">
+                    <a asp-action="Index" asp-controller="Dossierpatients">@localizer["Patients"]</a>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Index" asp-controller="Dossierpatients"><i class="fas fa-hospital-user fa-3x text-white"></i></a>
+                </div>
             </div>
-		</div>
-	</div>
+            <div class="col-6 col-md-3 card alert alert-danger p-1">
+                <div class="card-body ">
+                    <a asp-action="Index" asp-controller="Docteurs">@localizer["Docteurs"]</a>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Index" asp-controller="Docteurs"><i class="fas fa-user-md fa-3x text-white"></i></a>
+                </div>
+            </div>
+            <div class="col-6 col-md-3 card alert alert-warning p-1">
+                <div class="card-body ">
+                    <a asp-action="Index" asp-controller="Medicaments">@localizer["Médicaments"]</a>
+                </div>
+                <div class="card-footer">
+                    <a asp-action="Index" asp-controller="Medicaments"><i class="fas fa-pills fa-3x text-white"></i></a>
+                </div>
+            </div>
+        </div>
+    }
+        <div class="row">
+            <div class="card col-7">
+                <div class="card-body">
+                    <canvas id="chart">
+                    </canvas>
+                </div>
+            </div>
+            <div class="col-4 card offset-md-1">
+                <div class="card-body">
+                    <a class="twitter-timeline" height="400px" href="https://twitter.com/Santepub_Mtl?ref_src=twsrc%5Etfw">Santé publique Montréal</a>
+                </div>
+            </div>
+        </div>
+    </div>
 @section Scripts {
 	<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 	<script>

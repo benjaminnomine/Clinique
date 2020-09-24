@@ -10,10 +10,13 @@ namespace Clinique.Domain.Models
 {
     public class Medicament : DomainObject
     {
+        [Display(Name = "Nom medicament")]
         public string NomMed { get; set; }
+        [Display(Name = "Prix")]
         public double Prix { get; set; }
         [ForeignKey("Categorie")]
         public int IdCategorie { get; set; }
+        [Display(Name = "Categorie")]
         public Categorie Categorie { get; set; }
 
         public virtual ICollection<Ordonnancemedicament> Ordonnancemedicaments { get;set;}

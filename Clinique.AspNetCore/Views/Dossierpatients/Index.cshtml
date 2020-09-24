@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Clinique.Domain.Models.Dossierpatient>
+﻿@model PaginatedList<Clinique.Domain.Models.Dossierpatient>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,64 +13,74 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.NomP)
+                @*@Html.DisplayNameFor(model => model.NomP)*@Nom
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PrenomP)
+                @*@Html.DisplayNameFor(model => model.PrenomP)*@Prénom
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Genre)
+                @*@Html.DisplayNameFor(model => model.Genre)*@Genre
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NumAS)
+                @*@Html.DisplayNameFor(model => model.NumAS)*@<a asp-action="Index" asp-route-sortOrder="@ViewData["NumAsSortParm"]">Numéro assurance</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateNaiss)
+                @*@Html.DisplayNameFor(model => model.DateNaiss)*@<a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]">Date Naissance</a>
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.DateC)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Docteur)
+                @*@Html.DisplayNameFor(model => model.Docteur)*@
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.NomP)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrenomP)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumAS)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateNaiss)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateC)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Docteur.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrenomP)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Genre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NumAS)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateNaiss)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Docteur.NomM)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
 
-<div>
-
-</div>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-primary @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>

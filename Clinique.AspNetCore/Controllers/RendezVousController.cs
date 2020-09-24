@@ -56,8 +56,9 @@ namespace Clinique.AspNetCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _contextFactory.CreateDbContext().Add(rendezVous);
-                await _contextFactory.CreateDbContext().SaveChangesAsync();
+                CliniqueDbContext context = _contextFactory.CreateDbContext();
+                context.Add(rendezVous);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(rendezVous);
@@ -95,8 +96,9 @@ namespace Clinique.AspNetCore.Controllers
             {
                 try
                 {
-                    _contextFactory.CreateDbContext().Update(rendezVous);
-                    await _contextFactory.CreateDbContext().SaveChangesAsync();
+                    CliniqueDbContext context = _contextFactory.CreateDbContext();
+                    context.Update(rendezVous);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -137,9 +139,10 @@ namespace Clinique.AspNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var rendezVous = await _contextFactory.CreateDbContext().RendezVous.FindAsync(id);
-            _contextFactory.CreateDbContext().RendezVous.Remove(rendezVous);
-            await _contextFactory.CreateDbContext().SaveChangesAsync();
+            CliniqueDbContext context = _contextFactory.CreateDbContext();
+            var rendezVous = await context.RendezVous.FindAsync(id);
+            context.RendezVous.Remove(rendezVous);
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

@@ -8,7 +8,6 @@ using System.Text;
 namespace Clinique.EntityFramework
 {
     public class CliniqueDbContext : IdentityDbContext
-    //public class CliniqueDbContext : DbContext
     {
         public DbSet<Categorie> Categories { get; set; }
         public DbSet<Consultation> Consultations { get; set; }
@@ -21,7 +20,6 @@ namespace Clinique.EntityFramework
         public DbSet<Specialite> Specialites { get; set; }
         public DbSet<RendezVous> RendezVous { get;set;}
         public DbSet<CliniqueAspNetCoreUser> CliniqueAspNetCoreUsers { get; set; }
-        //public DbSet<Utilisateur> Utilisateurs { get;set;}
 
         public CliniqueDbContext(DbContextOptions options) : base(options) { }
 
@@ -31,11 +29,8 @@ namespace Clinique.EntityFramework
             modelBuilder.Entity<Docteur>().Property(o => o.Niveau).HasConversion<string>();
             modelBuilder.Entity<Dossierpatient>().Property(o => o.Genre).HasConversion<string>();
             modelBuilder.Entity<Ordonnance>().Property(o => o.TypeO).HasConversion<string>();
-            //modelBuilder.Entity<Utilisateur>().Property(u => u.TypeCompte).HasConversion<string>();
             modelBuilder.Entity<Consultation>().HasAlternateKey(c => new { c.IdDocteur, c.IdDossierpatient, c.DateC});
-            //modelBuilder.Entity<Consultation>().HasOne(c => c.Docteur).WithMany(d => d.Consultations).HasForeignKey(c => c.IdDocteur).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Consultation>().HasOne<Docteur>().WithMany(d => d.Consultations).HasForeignKey(c => c.IdDocteur).OnDelete(DeleteBehavior.NoAction);
-            //modelBuilder.Entity<Consultation>().HasOne(c => c.Dossierpatient).WithMany(d => d.Consultations).HasForeignKey(c => c.Dossierpatient).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<Consultation>().HasOne<Dossierpatient>().WithMany(d => d.Consultations).HasForeignKey(c => c.IdDossierpatient).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<CliniqueAspNetCoreUser>().Property(c => c.TypeCompte).HasConversion<string>();
 

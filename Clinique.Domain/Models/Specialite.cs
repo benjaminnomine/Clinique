@@ -10,7 +10,9 @@ namespace Clinique.Domain.Models
 {
     public class Specialite : DomainObject
     {
+        [Display(Name = "Titre")]
         public string Titre { get; set; }
+        [Display(Name = "Description")]
         public string Description { get; set; }
 
         public virtual ICollection<Docteur> Docteurs { get;set;}

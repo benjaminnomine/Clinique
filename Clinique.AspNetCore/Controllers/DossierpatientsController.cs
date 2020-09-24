@@ -1,8 +1,10 @@
-﻿using Clinique.Domain.Models;
+﻿using Clinique.Domain.Enums;
+using Clinique.Domain.Models;
 using Clinique.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,10 +20,44 @@ namespace Clinique.AspNetCore.Controllers
         }
 
         // GET: Dossierpatients
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(
+            string sortOrder,
+            string currentFilter,
+            string searchString,
+            int? pageNumber)
         {
-            var cliniqueDbContext = _contextFactory.CreateDbContext().Dossierpatients.Include(d => d.Docteur);
-            return View(await cliniqueDbContext.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["NumAsSortParm"] = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+            var patients = from s in _contextFactory.CreateDbContext().Dossierpatients.Include(d => d.Docteur) select s;
+
+            switch (sortOrder)
+            {
+                case "id_desc":
+                    patients = patients.OrderByDescending(s => s.NumAS);
+                    break;
+                case "Date":
+                    patients = patients.OrderBy(s => s.DateNaiss);
+                    break;
+                case "date_desc":
+                    patients = patients.OrderByDescending(s => s.DateNaiss);
+                    break;
+                default:
+                    patients = patients.OrderBy(s => s.NumAS);
+                    break;
+            }
+            int pageSize = 8;
+            return View(await PaginatedList<Dossierpatient>.CreateAsync(patients.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Dossierpatients/Details/5
@@ -46,7 +82,8 @@ namespace Clinique.AspNetCore.Controllers
         // GET: Dossierpatients/Create
         public IActionResult Create()
         {
-            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "Id");
+            ViewData["Genre"] = new SelectList(Enum.GetNames(typeof(Genre)));
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomM");
             return View();
         }
 
@@ -59,11 +96,13 @@ namespace Clinique.AspNetCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _contextFactory.CreateDbContext().Add(dossierpatient);
-                await _contextFactory.CreateDbContext().SaveChangesAsync();
+                CliniqueDbContext context = _contextFactory.CreateDbContext();
+                context.Add(dossierpatient);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "Id", dossierpatient.IdDocteur);
+            ViewData["Genre"] = new SelectList(Enum.GetNames(typeof(Genre)));
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomM", dossierpatient.IdDocteur);
             return View(dossierpatient);
         }
 
@@ -80,7 +119,8 @@ namespace Clinique.AspNetCore.Controllers
             {
                 return NotFound();
             }
-            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "Id", dossierpatient.IdDocteur);
+            ViewData["Genre"] = new SelectList(Enum.GetNames(typeof(Genre)));
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomM", dossierpatient.IdDocteur);
             return View(dossierpatient);
         }
 
@@ -100,8 +140,9 @@ namespace Clinique.AspNetCore.Controllers
             {
                 try
                 {
-                    _contextFactory.CreateDbContext().Update(dossierpatient);
-                    await _contextFactory.CreateDbContext().SaveChangesAsync();
+                    CliniqueDbContext context = _contextFactory.CreateDbContext();
+                    context.Update(dossierpatient);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -116,7 +157,8 @@ namespace Clinique.AspNetCore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "Id", dossierpatient.IdDocteur);
+            ViewData["Genre"] = new SelectList(Enum.GetNames(typeof(Genre)));
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomM", dossierpatient.IdDocteur);
             return View(dossierpatient);
         }
 
@@ -144,9 +186,10 @@ namespace Clinique.AspNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var dossierpatient = await _contextFactory.CreateDbContext().Dossierpatients.FindAsync(id);
-            _contextFactory.CreateDbContext().Dossierpatients.Remove(dossierpatient);
-            await _contextFactory.CreateDbContext().SaveChangesAsync();
+            CliniqueDbContext context = _contextFactory.CreateDbContext();
+            var dossierpatient = await context.Dossierpatients.FindAsync(id);
+            context.Dossierpatients.Remove(dossierpatient);
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

@@ -3,6 +3,7 @@ using Clinique.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,10 +19,44 @@ namespace Clinique.AspNetCore.Controllers
         }
 
         // GET: Docteurs
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(
+            string sortOrder,
+            string currentFilter,
+            string searchString,
+            int? pageNumber)
         {
-            var cliniqueDbContext = _contextFactory.CreateDbContext().Docteurs.Include(d => d.Specialite);
-            return View(await cliniqueDbContext.ToListAsync());
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["IdSortParm"] = String.IsNullOrEmpty(sortOrder) ? "id_desc" : "";
+            ViewData["SpecSortParm"] = sortOrder == "Specialite" ? "spec_desc" : "Specialite";
+
+            if (searchString != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+            ViewData["CurrentFilter"] = searchString;
+            var docteurs = from s in _contextFactory.CreateDbContext().Docteurs.Include(d => d.Specialite) select s;
+
+            switch (sortOrder)
+            {
+                case "id_desc":
+                    docteurs = docteurs.OrderByDescending(s => s.Id);
+                    break;
+                case "Specialite":
+                    docteurs = docteurs.OrderBy(s => s.Specialite.Titre);
+                    break;
+                case "spec_desc":
+                    docteurs = docteurs.OrderByDescending(s => s.Specialite.Titre);
+                    break;
+                default:
+                    docteurs = docteurs.OrderBy(s => s.Id);
+                    break;
+            }
+            int pageSize = 8;
+            return View(await PaginatedList<Docteur>.CreateAsync(docteurs.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Docteurs/Details/5
@@ -59,11 +94,12 @@ namespace Clinique.AspNetCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _contextFactory.CreateDbContext().Add(docteur);
-                await _contextFactory.CreateDbContext().SaveChangesAsync();
+                CliniqueDbContext context = _contextFactory.CreateDbContext();
+                context.Add(docteur);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdSpecialite"] = new SelectList(_contextFactory.CreateDbContext().Specialites, "Id", "Id", docteur.IdSpecialite);
+            ViewData["IdSpecialite"] = new SelectList(_contextFactory.CreateDbContext().Specialites, "Id", "Titre", docteur.IdSpecialite);
             return View(docteur);
         }
 
@@ -100,8 +136,9 @@ namespace Clinique.AspNetCore.Controllers
             {
                 try
                 {
-                    _contextFactory.CreateDbContext().Update(docteur);
-                    await _contextFactory.CreateDbContext().SaveChangesAsync();
+                    CliniqueDbContext context = _contextFactory.CreateDbContext();
+                    context.Update(docteur);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -116,7 +153,7 @@ namespace Clinique.AspNetCore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["IdSpecialite"] = new SelectList(_contextFactory.CreateDbContext().Specialites, "Id", "Id", docteur.IdSpecialite);
+            ViewData["IdSpecialite"] = new SelectList(_contextFactory.CreateDbContext().Specialites, "Id", "Titre", docteur.IdSpecialite);
             return View(docteur);
         }
 
@@ -144,9 +181,10 @@ namespace Clinique.AspNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var docteur = await _contextFactory.CreateDbContext().Docteurs.FindAsync(id);
-            _contextFactory.CreateDbContext().Docteurs.Remove(docteur);
-            await _contextFactory.CreateDbContext().SaveChangesAsync();
+            CliniqueDbContext context = _contextFactory.CreateDbContext();
+            var docteur = await context.Docteurs.FindAsync(id);
+            context.Docteurs.Remove(docteur);
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

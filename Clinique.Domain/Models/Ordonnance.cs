@@ -8,8 +8,11 @@ namespace Clinique.Domain.Models
 {
     public class Ordonnance : DomainObject
     {
+        [Display(Name = "Recommandations")]
         public string Recommandations { get; set; }
+        [Display(Name = "Type ordonnance")]
         public TypeO TypeO { get; set; }
+        [Display(Name = "Date creation")]
         public DateTime DateC { get; set; }
 
         public virtual ICollection<Ordonnancechirurgie> Ordonnancechirurgies { get;set;}

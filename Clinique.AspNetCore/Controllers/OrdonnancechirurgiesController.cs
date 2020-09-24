@@ -59,8 +59,9 @@ namespace Clinique.AspNetCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _contextFactory.CreateDbContext().Add(ordonnancechirurgie);
-                await _contextFactory.CreateDbContext().SaveChangesAsync();
+                CliniqueDbContext context = _contextFactory.CreateDbContext();
+                context.Add(ordonnancechirurgie);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["IdOrdonnance"] = new SelectList(_contextFactory.CreateDbContext().Ordonnances, "Id", "Id", ordonnancechirurgie.IdOrdonnance);
@@ -100,8 +101,9 @@ namespace Clinique.AspNetCore.Controllers
             {
                 try
                 {
-                    _contextFactory.CreateDbContext().Update(ordonnancechirurgie);
-                    await _contextFactory.CreateDbContext().SaveChangesAsync();
+                    CliniqueDbContext context = _contextFactory.CreateDbContext();
+                    context.Update(ordonnancechirurgie);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -144,9 +146,10 @@ namespace Clinique.AspNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ordonnancechirurgie = await _contextFactory.CreateDbContext().Ordonnancechirurgies.FindAsync(id);
-            _contextFactory.CreateDbContext().Ordonnancechirurgies.Remove(ordonnancechirurgie);
-            await _contextFactory.CreateDbContext().SaveChangesAsync();
+            CliniqueDbContext context = _contextFactory.CreateDbContext();
+            var ordonnancechirurgie = await context.Ordonnancechirurgies.FindAsync(id);
+            context.Ordonnancechirurgies.Remove(ordonnancechirurgie);
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

@@ -9,17 +9,17 @@ namespace Clinique.AspNetCore.Controllers
 {
     public class SpecialitesController : Controller
     {
-        private readonly CliniqueDbContext _context;
+        private readonly CliniqueDbContextFactory _contextFactory;
 
-        public SpecialitesController(CliniqueDbContext context)
+        public SpecialitesController(CliniqueDbContextFactory contextFactory)
         {
-            _context = context;
+            _contextFactory = contextFactory;
         }
 
         // GET: Specialites
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Specialites.ToListAsync());
+            return View(await _contextFactory.CreateDbContext().Specialites.ToListAsync());
         }
 
         // GET: Specialites/Details/5
@@ -30,7 +30,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var specialite = await _context.Specialites
+            var specialite = await _contextFactory.CreateDbContext().Specialites
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (specialite == null)
             {
@@ -55,8 +55,9 @@ namespace Clinique.AspNetCore.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(specialite);
-                await _context.SaveChangesAsync();
+                CliniqueDbContext context = _contextFactory.CreateDbContext();
+                context.Add(specialite);
+                await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(specialite);
@@ -70,7 +71,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var specialite = await _context.Specialites.FindAsync(id);
+            var specialite = await _contextFactory.CreateDbContext().Specialites.FindAsync(id);
             if (specialite == null)
             {
                 return NotFound();
@@ -94,8 +95,9 @@ namespace Clinique.AspNetCore.Controllers
             {
                 try
                 {
-                    _context.Update(specialite);
-                    await _context.SaveChangesAsync();
+                    CliniqueDbContext context = _contextFactory.CreateDbContext();
+                    context.Update(specialite);
+                    await context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -121,7 +123,7 @@ namespace Clinique.AspNetCore.Controllers
                 return NotFound();
             }
 
-            var specialite = await _context.Specialites
+            var specialite = await _contextFactory.CreateDbContext().Specialites
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (specialite == null)
             {
@@ -136,15 +138,16 @@ namespace Clinique.AspNetCore.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var specialite = await _context.Specialites.FindAsync(id);
-            _context.Specialites.Remove(specialite);
-            await _context.SaveChangesAsync();
+            CliniqueDbContext context = _contextFactory.CreateDbContext();
+            var specialite = await context.Specialites.FindAsync(id);
+            context.Specialites.Remove(specialite);
+            await context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool SpecialiteExists(int id)
         {
-            return _context.Specialites.Any(e => e.Id == id);
+            return _contextFactory.CreateDbContext().Specialites.Any(e => e.Id == id);
         }
     }
 }
