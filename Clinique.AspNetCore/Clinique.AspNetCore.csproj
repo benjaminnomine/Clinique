@@ -6,6 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\lib\fullcalendar\**" />
+    <Content Remove="wwwroot\lib\fullcalendar\**" />
+    <EmbeddedResource Remove="wwwroot\lib\fullcalendar\**" />
+    <None Remove="wwwroot\lib\fullcalendar\**" />
+    <TypeScriptCompile Remove="wwwroot\lib\fullcalendar\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="bundleconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Chart.js" Version="2.9.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.8" />
@@ -32,6 +44,10 @@
     <Folder Include="Resources\Controllers\" />
     <Folder Include="Resources\Models\" />
     <Folder Include="Resources\Views\Home\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bundleconfig.json" />
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "wwwroot/lib/moment/dist/moment.min.js",
+    "inputFiles": [
+      "wwwroot/lib/moment/dist/moment.js"
+    ]
+  }
+]

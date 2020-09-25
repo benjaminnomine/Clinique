@@ -81,7 +81,7 @@ namespace Clinique.AspNetCore.Controllers
         // GET: Docteurs/Create
         public IActionResult Create()
         {
-            ViewData["IdSpecialite"] = new SelectList(_contextFactory.CreateDbContext().Specialites, "Id", "Id");
+            ViewData["IdSpecialite"] = new SelectList(_contextFactory.CreateDbContext().Specialites, "Id", "Titre");
             return View();
         }
 

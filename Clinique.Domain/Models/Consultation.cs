@@ -10,18 +10,18 @@ namespace Clinique.Domain.Models
 {
     public class Consultation : DomainObject
     {
-        //[ForeignKey("Docteur")]
+        [ForeignKey("Docteur")]
         public int IdDocteur { get; set; }
-        //public Docteur Docteur { get;set;}
-        //[ForeignKey("Dossierpatient")]
+        public Docteur Docteur { get;set;}
+        [ForeignKey("Dossierpatient")]
         public int IdDossierpatient { get; set; }
-        //public Dossierpatient Dossierpatient { get;set;}
+        public Dossierpatient Dossierpatient { get;set;}
         public DateTime DateC { get; set; }
         public string Diagnostic { get; set; }
 
-        //[ForeignKey("Ordonnance")]
+        [ForeignKey("Ordonnance")]
         public int IdOrdonnance { get; set; }
-        //public Ordonnance Ordonnance { get;set;}
+        public Ordonnance Ordonnance { get;set;}
         public Consultation()
         {
 

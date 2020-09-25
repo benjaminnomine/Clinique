@@ -65,6 +65,8 @@ namespace Clinique.EntityFramework.Migrations
 
                     b.HasIndex("IdDossierpatient");
 
+                    b.HasIndex("IdOrdonnance");
+
                     b.ToTable("Consultations");
                 });
 
@@ -249,14 +251,32 @@ namespace Clinique.EntityFramework.Migrations
                     b.Property<DateTime>("DateRdv")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double>("Duree")
                         .HasColumnType("float");
+
+                    b.Property<DateTime>("End")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("IdDocteur")
                         .HasColumnType("int");
 
                     b.Property<int>("IdDossierpatient")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsFullDay")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Subject")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ThemeColor")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -502,16 +522,22 @@ namespace Clinique.EntityFramework.Migrations
 
             modelBuilder.Entity("Clinique.Domain.Models.Consultation", b =>
                 {
-                    b.HasOne("Clinique.Domain.Models.Docteur", null)
+                    b.HasOne("Clinique.Domain.Models.Docteur", "Docteur")
                         .WithMany("Consultations")
                         .HasForeignKey("IdDocteur")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Clinique.Domain.Models.Dossierpatient", null)
+                    b.HasOne("Clinique.Domain.Models.Dossierpatient", "Dossierpatient")
                         .WithMany("Consultations")
                         .HasForeignKey("IdDossierpatient")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Clinique.Domain.Models.Ordonnance", "Ordonnance")
+                        .WithMany()
+                        .HasForeignKey("IdOrdonnance")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
@@ -568,16 +594,16 @@ namespace Clinique.EntityFramework.Migrations
 
             modelBuilder.Entity("Clinique.Domain.Models.RendezVous", b =>
                 {
-                    b.HasOne("Clinique.Domain.Models.Docteur", null)
+                    b.HasOne("Clinique.Domain.Models.Docteur", "Docteur")
                         .WithMany("RendezVous")
                         .HasForeignKey("IdDocteur")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Clinique.Domain.Models.Dossierpatient", null)
+                    b.HasOne("Clinique.Domain.Models.Dossierpatient", "Dossierpatient")
                         .WithMany("RendezVous")
                         .HasForeignKey("IdDossierpatient")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

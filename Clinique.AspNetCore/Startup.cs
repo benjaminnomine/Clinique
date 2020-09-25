@@ -7,7 +7,7 @@ using Clinique.Domain.Services.API;
 using Clinique.EntityFramework;
 using Clinique.EntityFramework.Seed;
 using Clinique.EntityFramework.Services;
-
+using Clinique.Ressources;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using System.Collections.Generic;
 using System.Globalization;
 
@@ -46,6 +47,7 @@ namespace Clinique.AspNetCore
             services.AddSingleton<CoronavirusController>();
             services.AddSingleton<HomeController>();
 
+            services.AddSingleton<ISharedViewLocalizer, SharedViewLocalizer>();
             services.AddDefaultIdentity<CliniqueAspNetCoreUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<CliniqueDbContext>();
 
@@ -53,13 +55,14 @@ namespace Clinique.AspNetCore
 
             services.AddMvc()
                 .AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
+                .AddDataAnnotationsLocalization(options => options.DataAnnotationLocalizerProvider = (t, f) => f.Create(typeof(SharedResource)));
 
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var cultures = new List<CultureInfo> {
-                    new CultureInfo("en"),
-                    new CultureInfo("fr")
+                                        new CultureInfo("fr"),
+                                        new CultureInfo("en"),
+
                 };
                 options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("fr");
                 options.SupportedCultures = cultures;
@@ -83,6 +86,8 @@ namespace Clinique.AspNetCore
                 app.UseExceptionHandler("/Home/Error");
             }
             app.UseStaticFiles();
+
+            app.UseRequestLocalization(app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
             app.UseSession();
             app.UseRouting();

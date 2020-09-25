@@ -26,17 +26,21 @@ namespace Clinique.EntityFramework
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Docteur>().Property(o => o.Niveau).HasConversion<string>();
             modelBuilder.Entity<Dossierpatient>().Property(o => o.Genre).HasConversion<string>();
             modelBuilder.Entity<Ordonnance>().Property(o => o.TypeO).HasConversion<string>();
-            modelBuilder.Entity<Consultation>().HasAlternateKey(c => new { c.IdDocteur, c.IdDossierpatient, c.DateC});
-            modelBuilder.Entity<Consultation>().HasOne<Docteur>().WithMany(d => d.Consultations).HasForeignKey(c => c.IdDocteur).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<Consultation>().HasOne<Dossierpatient>().WithMany(d => d.Consultations).HasForeignKey(c => c.IdDossierpatient).OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<CliniqueAspNetCoreUser>().Property(c => c.TypeCompte).HasConversion<string>();
 
+
+            modelBuilder.Entity<Consultation>().HasAlternateKey(c => new { c.IdDocteur, c.IdDossierpatient, c.DateC});
+            //modelBuilder.Entity<Consultation>().HasOne<Docteur>().WithMany(d => d.Consultations).HasForeignKey(c => c.IdDocteur).OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<Consultation>().HasOne<Dossierpatient>().WithMany(d => d.Consultations).HasForeignKey(c => c.IdDossierpatient).OnDelete(DeleteBehavior.NoAction);
+
+
             modelBuilder.Entity<RendezVous>().HasAlternateKey(r => new { r.DateRdv, r.IdDocteur, r.IdDossierpatient});
-            modelBuilder.Entity<RendezVous>().HasOne<Docteur>().WithMany(d => d.RendezVous).HasForeignKey(r => r.IdDocteur).OnDelete(DeleteBehavior.NoAction);
-            modelBuilder.Entity<RendezVous>().HasOne<Dossierpatient>().WithMany(d => d.RendezVous).HasForeignKey(r => r.IdDossierpatient).OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<RendezVous>().HasOne<Docteur>().WithMany(d => d.RendezVous).HasForeignKey(r => r.IdDocteur).OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<RendezVous>().HasOne<Dossierpatient>().WithMany(d => d.RendezVous).HasForeignKey(r => r.IdDossierpatient).OnDelete(DeleteBehavior.NoAction);
 
         }
     }

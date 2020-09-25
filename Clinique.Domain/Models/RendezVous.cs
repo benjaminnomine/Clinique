@@ -11,12 +11,19 @@ namespace Clinique.Domain.Models
         public double Duree { get; set; }
         public DateTime DateFin { get; set; }
 
-        //[ForeignKey("Docteur")]
+        [ForeignKey("Docteur")]
         public int IdDocteur { get;set;}
-        //public Docteur Docteur { get; set; }
-        //[ForeignKey("Dossierpatient")]
+        public Docteur Docteur { get; set; }
+        [ForeignKey("Dossierpatient")]
         public int IdDossierpatient { get; set; }
-        //public Dossierpatient Dossierpatient { get; set; }
+        public Dossierpatient Dossierpatient { get; set; }
+
+        public string Subject { get; set; }
+        public string Description { get; set; }
+        public DateTime Start { get; set; }
+        public DateTime End { get; set; }
+        public string ThemeColor { get; set; }
+        public bool IsFullDay { get; set; }
 
         public RendezVous()
         {

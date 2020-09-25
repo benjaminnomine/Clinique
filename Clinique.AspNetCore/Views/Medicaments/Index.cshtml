@@ -2,24 +2,25 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutMed.cshtml";
 }
 
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-warning">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @*@Html.DisplayNameFor(model => model.NomMed)*@<a asp-action="Index" asp-route-sortOrder="@ViewData["NomSortParm"]">Nom</a>
+                @*@Html.DisplayNameFor(model => model.NomMed)*@<a class="text-warning" asp-action="Index" asp-route-sortOrder="@ViewData["NomSortParm"]">Nom</a>
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.Prix)*@<a asp-action="Index" asp-route-sortOrder="@ViewData["PrixSortParm"]">Prix</a>
+                @*@Html.DisplayNameFor(model => model.Prix)*@<a  class="text-warning" asp-action="Index" asp-route-sortOrder="@ViewData["PrixSortParm"]">Prix</a>
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.Categorie)*@<a asp-action="Index" asp-route-sortOrder="@ViewData["CatSortParm"]">Catégorie</a>
+                @*@Html.DisplayNameFor(model => model.Categorie)*@<a  class="text-warning" asp-action="Index" asp-route-sortOrder="@ViewData["CatSortParm"]">Catégorie</a>
             </th>
             <th></th>
         </tr>
@@ -38,9 +39,9 @@
                     @Html.DisplayFor(modelItem => item.Categorie.Nom)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a  class="text-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a  class="text-warning" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a  class="text-warning" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }

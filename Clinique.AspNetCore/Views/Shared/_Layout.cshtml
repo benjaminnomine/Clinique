@@ -10,9 +10,9 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="~/lib/fortawesome/fontawesome-free/css/all.css" rel="stylesheet" />
-    <link href="~/lib/fortawesome/fontawesome-free/css/svg-with-js.css" rel="stylesheet" />
     <link href="~/lib/Chart.js/Chart.css" rel="stylesheet" />
-    <link href="~/lib/fullcalendar/lib/main.css" rel="stylesheet" />
+    <link href="~/lib/fullcalendar-scheduler/main.css" rel="stylesheet" />
+    <link href="~/lib/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/css/bootstrap.css" rel="stylesheet" />
 </head>
@@ -20,7 +20,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-primary border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand text-dark" asp-area="" asp-controller="Home" asp-action="Index">Clinique.AspNetCore</a>
+                <a class="navbar-brand text-dark" asp-area="" asp-controller="Home" asp-action="Index">Clinique</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -33,11 +33,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fas fa-user-secret"></i>Privacy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Categories" asp-action="Index"><i class="fas fa-medkit"></i>Catégories</a>
-                        </li>
+                        @*<li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Categories" asp-action="Index"><i class="fas fa-medkit"></i>Catégories</a>
+                            </li>*@
                         <li class="nav-item">
                             <a class="nav-link text-white" asp-area="" asp-controller="Coronavirus" asp-action="Index"><i class="fas fa-virus"></i>Coronavirus</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Secretaire" asp-action="Index"><i class="fas fa-dna"></i>Secrétaire</a>
                         </li>
                         <li class="nav-item">
                             @await Html.PartialAsync("_CulturePartial")
@@ -60,12 +63,14 @@
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/moment/min/moment.min.js"></script>
+    <script src="~/lib/moment/min/locales.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/fortawesome/fontawesome-free/js/fontawesome.js"></script>
-    <script src="~/lib/fortawesome/fontawesome-free/js/all.js"></script>
     <script src="~/lib/Chart.js/Chart.js"></script>
+    <script src="~/lib/fullcalendar-scheduler/main.js"></script>
+    <script src="~/lib/fullcalendar-scheduler/locales-all.js"></script>
+    <script src="~/lib/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/lib/fullcalendar/lib/main.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 </html>

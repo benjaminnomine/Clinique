@@ -1,0 +1,73 @@
+﻿@*@inject Microsoft.AspNetCore.Http.HttpContextAccessor httpcontext
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<Clinique.Ressources.CliniqueRessource> cliniqueRessource*@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="~/lib/fortawesome/fontawesome-free/css/all.css" rel="stylesheet" />
+    <link href="~/lib/fortawesome/fontawesome-free/css/svg-with-js.css" rel="stylesheet" />
+    <link href="~/lib/Chart.js/Chart.css" rel="stylesheet" />
+    <link href="~/lib/fullcalendar/lib/main.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-danger border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand text-dark" asp-area="" asp-controller="Home" asp-action="Index">Clinique</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i>Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fas fa-user-secret"></i>Privacy</a>
+                        </li>
+                        @*<li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Categories" asp-action="Index"><i class="fas fa-medkit"></i>Catégories</a>
+                        </li>*@
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Coronavirus" asp-action="Index"><i class="fas fa-virus"></i>Coronavirus</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" asp-area="" asp-controller="Secretaire" asp-action="Index"><i class="fas fa-dna"></i>Secrétaire</a>
+                        </li>
+                        <li class="nav-item">
+                            @await Html.PartialAsync("_CulturePartial")
+                        </li>
+                        @await Html.PartialAsync("_LoginPartial")
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - Clinique.AspNetCore - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/fortawesome/fontawesome-free/js/fontawesome.js"></script>
+    <script src="~/lib/fortawesome/fontawesome-free/js/all.js"></script>
+    <script src="~/lib/Chart.js/Chart.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

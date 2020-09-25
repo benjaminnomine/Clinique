@@ -1,76 +1,81 @@
-﻿@model PaginatedList<Clinique.Domain.Models.Docteur>
+﻿@using Microsoft.AspNetCore.Mvc.Localization;
+@model PaginatedList<Clinique.Domain.Models.Docteur>
+
+@inject IViewLocalizer localizer
+@inject IHtmlLocalizer<SharedResource> sharedLocalizer
 
 @{
     ViewData["Title"] = "Index";
-
+    Layout = "~/Views/Shared/_LayoutDoc.cshtml";
 }
 
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-danger" asp-action="Create">@sharedLocalizer["Create New"]</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["IdSortParm"]">@*@Html.DisplayNameFor(model => model.Id)*@Id</a>
+                <a class="text-danger" asp-action="Index" asp-route-sortOrder="@ViewData["IdSortParm"]">@*@Html.DisplayNameFor(model => model.Id)*@Id</a>
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.NomM)*@ @*@localizer("Nom")*@ Nom
+                @*@Html.DisplayNameFor(model => model.NomM)*@ @*@localizer("Nom")*@Nom
             </th>
             <th>
                 @*@Html.DisplayNameFor(model => model.PrenomM)*@ @*@localizer("Prenom")*@ Prénom
             </th>
             <th>
-                <a asp-action="Index" asp-route-sortOrder="@ViewData["SpecSortParm"]">@*@Html.DisplayNameFor(model => model.Specialite)*@Spécialité</a>
+                <a class="text-danger" asp-action="Index" asp-route-sortOrder="@ViewData["SpecSortParm"]">@*@Html.DisplayNameFor(model => model.Specialite)*@Spécialité</a>
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Ville)*@Ville
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Adresse)*@Adresse
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Niveau)*@Niveau
             </th>
             @*<th>
-                @Html.DisplayNameFor(model => model.Ville)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Adresse)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Niveau)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NbrPatients)
-            </th>
-            <th></th>*@
+                    @Html.DisplayNameFor(model => model.NbrPatients)
+                </th>*@
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NomM)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PrenomM)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Specialite.Titre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ville)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Adresse)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Niveau)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NomM)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PrenomM)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Specialite.Titre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ville)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Adresse)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Niveau)
+                </td>
+                <td>
+                    <a class="text-danger" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a class="text-danger" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a class="text-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 

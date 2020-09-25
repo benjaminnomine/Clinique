@@ -22,10 +22,8 @@ namespace Clinique.EntityFramework
         public CliniqueDbContext CreateDbContext(string[] args = null)
         {
             var options = new DbContextOptionsBuilder<CliniqueDbContext>();
-            //options.UseSqlServer("Data Source=(localdb)\\MSSQLlocalDB;Integrated Security=True;Database=Clinique;");
-            //options.UseSqlServer("Server=.\\SQLExpress;AttachDbFilename=Clinique.mdf;Database=Clinique;Trusted_Connection=Yes;");
-            options.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=Clinic;Integrated Security=True;Pooling=False");
-            //options.UseSqlServer(_connectionString);
+            //options.UseSqlServer("Data Source=(localdb)\\mssqllocaldb;Initial Catalog=Clinic;Integrated Security=True;Pooling=False");
+            options.UseSqlServer(_connectionString);
 
             return new CliniqueDbContext(options.Options);
         }
