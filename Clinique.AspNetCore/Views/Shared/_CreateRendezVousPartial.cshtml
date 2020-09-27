@@ -3,13 +3,13 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
-            <h4 id="titreedit" class="modal-title"><label asp-for="Subject" class="control-label"></label></h4>
+            <h4 id="titreedit" class="modal-title">Prise de rendez-vous</h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>
         <div class="modal-body">
-            <form asp-action="Edit" data-ajax="true" asp-controller="Secretaire">
+            <form asp-action="Create" data-ajax="true">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
                     <label asp-for="Subject" class="control-label"></label>
@@ -21,16 +21,16 @@
                     <input asp-for="Description" class="form-control" />
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
-                <div class="input-group date" id="datetimepicker6" data-target-input="nearest">
-                    <input asp-for="Start" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker6" />
-                    <div class="input-group-append" data-target="#datetimepicker6" data-toggle="datetimepicker">
+                <div class="input-group date" id="datetimepicker11" data-target-input="nearest">
+                    <input asp-for="Start" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker11" />
+                    <div class="input-group-append" data-target="#datetimepicker11" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     <span asp-validation-for="Start" class="text-danger"></span>
                 </div>
-                <div class="input-group date" id="datetimepicker7" data-target-input="nearest">
-                    <input asp-for="End" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker7" />
-                    <div class="input-group-append" data-target="#datetimepicker7" data-toggle="datetimepicker">
+                <div class="input-group date" id="datetimepicker12" data-target-input="nearest">
+                    <input asp-for="End" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker12" />
+                    <div class="input-group-append" data-target="#datetimepicker12" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     <span asp-validation-for="End" class="text-danger"></span>
@@ -48,12 +48,9 @@
                     <select asp-for="IdDossierpatient" class="form-control" asp-items="ViewBag.IdDossier"></select>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Sauvegarder" class="btn btn-primary" data-dismiss="modal"/>
+                    <input type="submit" value="Create" class="btn btn-primary" data-dismiss="modal" />
                 </div>
             </form>
-            <div>
-                @Html.ActionLink("Delete", "Delete", "Secretaire", new { Id = Model.Id }, new { @class = "btn btn-default btn-danger"})
-            </div>
         </div>
     </div>
 </div>
@@ -62,10 +59,10 @@
 @section Scripts {
     <script type="text/javascript">
         $(document).on('ready', function (e) {
-            $('#datetimepicker7').datetimepicker({
+            $('#datetimepicker12').datetimepicker({
                 locale: 'fr-ca'
             });
-            $('#datetimepicker8').datetimepicker({
+            $('#datetimepicker11').datetimepicker({
                 locale: 'fr-ca'
             });
         })

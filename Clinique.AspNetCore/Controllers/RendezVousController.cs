@@ -1,10 +1,13 @@
-﻿using Clinique.Domain.Models;
-using Clinique.EntityFramework;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Clinique.Domain.Models;
+using Clinique.EntityFramework;
+using Clinique.Domain.Enums;
 
 namespace Clinique.AspNetCore.Controllers
 {
@@ -12,15 +15,16 @@ namespace Clinique.AspNetCore.Controllers
     {
         private readonly CliniqueDbContextFactory _contextFactory;
 
-        public RendezVousController(CliniqueDbContextFactory contextFactory)
+        public RendezVousController(CliniqueDbContextFactory context)
         {
-            _contextFactory = contextFactory;
+            _contextFactory = context;
         }
 
         // GET: RendezVous
         public async Task<IActionResult> Index()
         {
-            return View(await _contextFactory.CreateDbContext().RendezVous.ToListAsync());
+            var cliniqueDbContext = _contextFactory.CreateDbContext().RendezVous.Include(r => r.Docteur).Include(r => r.Dossierpatient);
+            return View(await cliniqueDbContext.ToListAsync());
         }
 
         // GET: RendezVous/Details/5
@@ -32,6 +36,8 @@ namespace Clinique.AspNetCore.Controllers
             }
 
             var rendezVous = await _contextFactory.CreateDbContext().RendezVous
+                .Include(r => r.Docteur)
+                .Include(r => r.Dossierpatient)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (rendezVous == null)
             {
@@ -44,6 +50,9 @@ namespace Clinique.AspNetCore.Controllers
         // GET: RendezVous/Create
         public IActionResult Create()
         {
+            ViewData["Couleurs"] = Couleur.CreerSelectList();
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet");
+            ViewData["IdDossierpatient"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet");
             return View();
         }
 
@@ -52,7 +61,7 @@ namespace Clinique.AspNetCore.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DateRdv,Duree,IdDocteur,IdDossierpatient,Id")] RendezVous rendezVous)
+        public async Task<IActionResult> Create([Bind("Subject,Description,Start,End,ThemeColor,IdDocteur,IdDossierpatient,Id")] RendezVous rendezVous)
         {
             if (ModelState.IsValid)
             {
@@ -61,6 +70,9 @@ namespace Clinique.AspNetCore.Controllers
                 await context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Couleurs"] = Couleur.CreerSelectList();
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet", rendezVous.IdDocteur);
+            ViewData["IdDossierpatient"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
             return View(rendezVous);
         }
 
@@ -77,6 +89,9 @@ namespace Clinique.AspNetCore.Controllers
             {
                 return NotFound();
             }
+            ViewData["Couleurs"] = Couleur.CreerSelectList();
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet", rendezVous.IdDocteur);
+            ViewData["IdDossierpatient"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
             return View(rendezVous);
         }
 
@@ -85,7 +100,7 @@ namespace Clinique.AspNetCore.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DateRdv,Duree,IdDocteur,IdDossierpatient,Id")] RendezVous rendezVous)
+        public async Task<IActionResult> Edit(int id, [Bind("Subject,Description,Start,End,ThemeColor,IsFullDay,IdDocteur,IdDossierpatient,Id")] RendezVous rendezVous)
         {
             if (id != rendezVous.Id)
             {
@@ -113,6 +128,9 @@ namespace Clinique.AspNetCore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Couleurs"] = Couleur.CreerSelectList();
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet", rendezVous.IdDocteur);
+            ViewData["IdDossierpatient"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
             return View(rendezVous);
         }
 
@@ -125,6 +143,8 @@ namespace Clinique.AspNetCore.Controllers
             }
 
             var rendezVous = await _contextFactory.CreateDbContext().RendezVous
+                .Include(r => r.Docteur)
+                .Include(r => r.Dossierpatient)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (rendezVous == null)
             {
@@ -149,12 +169,6 @@ namespace Clinique.AspNetCore.Controllers
         private bool RendezVousExists(int id)
         {
             return _contextFactory.CreateDbContext().RendezVous.Any(e => e.Id == id);
-        }
-
-        public async Task<ActionResult> FullCalendarAsync()
-        {
-            List<RendezVous> fullCalendar = await _contextFactory.CreateDbContext().RendezVous.ToListAsync();
-            return Json(fullCalendar);
         }
     }
 }

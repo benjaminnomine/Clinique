@@ -13,14 +13,35 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="DateRdv" class="control-label"></label>
-                <input asp-for="DateRdv" class="form-control" />
-                <span asp-validation-for="DateRdv" class="text-danger"></span>
+                <label asp-for="Subject" class="control-label"></label>
+                <input asp-for="Subject" class="form-control" />
+                <span asp-validation-for="Subject" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Duree" class="control-label"></label>
-                <input asp-for="Duree" class="form-control" />
-                <span asp-validation-for="Duree" class="text-danger"></span>
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group date" id="datetimepicker1" data-target-input="nearest">
+                <label asp-for="Start" class="control-label"></label>
+                <input asp-for="Start" type="datetime-local" id="txtStart" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+                <span asp-validation-for="Start" class="text-danger"></span>
+            </div>
+            <div class="form-group date" id="datetimepicker2" data-target-input="nearest">
+                <label asp-for="End" class="control-label"></label>
+                <input asp-for="End" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
+                <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                </div>
+                <span asp-validation-for="End" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ThemeColor" class="control-label"></label>
+                <select asp-for="ThemeColor" class="form-control" asp-items="ViewBag.Couleurs" />
+                <span asp-validation-for="ThemeColor" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="IdDocteur" class="control-label"></label>
@@ -29,7 +50,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="IdDossierpatient" class="control-label"></label>
-                <select asp-for="IdDossierpatient" class="form-control" asp-items="ViewBag.IdDossierpatient"></select>
+                <select asp-for="IdDossierpatient" class="form-control" asp-items="ViewBag.IdDossier"></select>
                 <span asp-validation-for="IdDossierpatient" class="text-danger"></span>
             </div>
             <input type="hidden" asp-for="Id" />
@@ -45,5 +66,14 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker({
+                locale: 'fr-ca'
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'fr-ca'
+            });
+        });
+    </script>
 }

@@ -1,84 +1,59 @@
-﻿
+﻿@model Clinique.Domain.Models.RendezVous
 @{
     ViewData["Title"] = "Sécrétariat";
 }
 
-<div id="myModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><span id="eventTitle"></span></h4>
-            </div>
-            <div class="modal-body">
-                <button id="btnDelete" class="btn btn-default btn-sm pull-right">
-                    <i class="fas fa-eraser"></i> Remove
-                </button>
-                <button id="btnEdit" class="btn btn-default btn-sm pull-right mr-5">
-                    <i class="fas fa-pencil-alt"></i> Edit
-                </button>
-                <p id="pDetails"></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
+<div id="editionRDV" class="modal fade" role="dialog">
+
 </div>
-<div id="myModalSave" class="modal fade" role="dialog">
+<div id="creationRDV" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Créer Rendez-vous</h4>
+                <h4 class="modal-title">Rendez-vous</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
             </div>
             <div class="modal-body">
-                <form class="col-md-12 form-horizontal">
-                    <input type="hidden" id="hdEventID" value="0" />
+                <form class="col-md-12 form-horizontal" asp-action="Create">
                     <div class="form-group">
-                        <label>Subject</label>
-                        <input type="text" id="txtSubject" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label>Start</label>
-                        <div class="input-group date" id="dtp1">
-                            <input type="text" id="txtStart" class="form-control" />
-                            <span class="input-group-addon">
-                                <i class="fas fa-calendar-alt"></i>
-                            </span>
-                        </div>
+                        <label asp-for="Subject" class="control-label"></label>
+                        <input asp-for="Subject" class="form-control" />
+                        <span asp-validation-for="Subject" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <div class="checkbox">
-                            <label><input type="checkbox" id="chkIsFullDay" checked="checked" />Journée complète ?</label>
-                        </div>
+                        <label asp-for="Description" class="control-label"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
-                    <div class="form-group" id="divEndDate">
-                        <label>End</label>
-                        <div class="input-group date" id="dtp2">
-                            <input type="text" id="txtEnd" class="form-control" />
-                            <span class="input-group-addon">
-                                <i class="fas fa-calendar-alt"></i>
-                            </span>
-                        </div>
+                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                    <input asp-for="Start" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    <span asp-validation-for="Start" class="text-danger"></span>
+                </div>
+                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                    <input asp-for="End" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
+                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    </div>
+                    <span asp-validation-for="End" class="text-danger"></span>
+                </div>
+                    <div class="form-group">
+                        <label asp-for="ThemeColor" class="control-label"></label>
+                        <select asp-for="ThemeColor" class="form-control" asp-items="ViewBag.Couleurs"></select>
                     </div>
                     <div class="form-group">
-                        <label>Description</label>
-                        <textarea id="txtDescription" rows="3" class="form-control"></textarea>
+                        <label asp-for="IdDocteur" class="control-label"></label>
+                        <select asp-for="IdDocteur" class="form-control" asp-items="ViewBag.IdDocteur"></select>
                     </div>
                     <div class="form-group">
-                        <label>Theme Color</label>
-                        <select id="ddThemeColor" class="form-control">
-                            <option value="">Default</option>
-                            <option value="red">Rouge</option>
-                            <option value="blue">Bleu</option>
-                            <option value="black">Noir</option>
-                            <option value="green">Vert</option>
-                            <option value="pink">Rose</option>
-                        </select>
+                        <label asp-for="IdDossierpatient" class="control-label"></label>
+                        <select asp-for="IdDossierpatient" class="form-control" asp-items="ViewBag.IdDossier"></select>
                     </div>
-                    <button type="button" id="btnSave" class="btn btn-success">Enregistrer</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                    <div class="form-group">
+                        <input type="submit" asp-controller="Secretaire" asp-action="Create" class="btn btn-primary" />
+                    </div>
                 </form>
             </div>
         </div>
@@ -120,26 +95,74 @@
                     endTime: '20:00',
                 },
                 firstDay: 0,
-                //locales: allLocales,
                 locale: 'fr',
                 eventClick: function (calEvent) {
-                    $('#myModal #eventTitle').text(calEvent.event.title);
-                    var $description = $('<div/>');
-                    $description.append($('<p/>').html('<b>Start:</b>' + calEvent.event.start));
-                    if (calEvent.event.end != null) {
-                        $description.append($('<p/>').html('<b>End:</b>' + calEvent.event.end));
-                    }
-                    $description.append($('<p/>').html('<b>Description:</b>' + calEvent.event.extendedProps.description + calEvent.event.extendedProps.docteur));
-                    $('#myModal #pDetails').empty().html($description);
+                    $.ajax({
+                        type: "GET",
+                        url: "/Secretaire/Edit/" + calEvent.event.extendedProps.eventid,
+                        dataType: "html",
+                        success: function (evt) {
+                            $('#editionRDV').html(evt);
+                            $('#editionRDV').modal();
+                        },
+                        error: function (req, status, error) {
+                            console.log(req);
+                        }
+                    });
 
-                    $('#myModal').modal();
                 },
                 dateClick: function (info) {
-                    $('#myModalSave').modal();
+                    //$.ajax({
+                    //    type: "GET",
+                    //    url: "/Secretaire/CreatePartial/" + info.dateStr,
+                    //    dataType: "html",
+                    //    success: function (evt) {
+                    //        //$('#txtStart').val(info.dateStr);
+                    //        $('#creationRDV').html(evt);
+                    //        $('#creationRDV').modal();
+                    //    },
+                    //    error: function (req, status, error) {
+                    //        console.log(req);
+                    //    }
+                    //})
+                    $('#txtStart').val(info.dateStr);
+                    $('#creationRDV').modal();
                 },
             })
             calendar.render();
-
+            $('#datetimepicker3').datetimepicker({
+                locale: 'fr-ca'
+            });
+            $('#datetimepicker3').on("change.datetimepicker", function (e) {
+                $('#datetimepicker4').datetimepicker('minDate', e.date);
+            });
+            $('#datetimepicker4').datetimepicker({
+                locale: 'fr-ca',
+                useCurrent: false
+            });
+            $('#datetimepicker4').on("change.datetimepicker", function (e) {
+                $('#datetimepicker3').datetimepicker('maxDate', e.date);
+            });
+            $('#datetimepicker1').datetimepicker({
+                locale: 'fr-ca'
+            });
+            $('#datetimepicker1').on("change.datetimepicker", function (e) {
+                $('#datetimepicker2').datetimepicker('minDate', e.date);
+                $('#datetimepicker2').data("DateTimePicker").date(moment(e.date).add(30, "minutes"));
+            });
+            $('#datetimepicker2').datetimepicker({
+                locale: 'fr-ca',
+                useCurrent: false
+            });
+            $('#datetimepicker2').on("change.datetimepicker", function (e) {
+                $('#datetimepicker1').datetimepicker('maxDate', e.date);
+            });
+            $('#datetimepicker7').datetimepicker({
+                locale: 'fr-ca'
+            });
+            $('#datetimepicker8').datetimepicker({
+                locale: 'fr-ca'
+            });
         }
         )
     </script>

@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Clinique.Domain.Enums;
 using Clinique.Domain.Models;
 using Clinique.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SQLitePCL;
 
@@ -23,6 +25,11 @@ namespace Clinique.AspNetCore.Controllers
 
         public IActionResult Index()
         {
+
+            ViewData["Couleurs"] = Couleur.CreerSelectList();
+            ViewData["IdDossier"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet");
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet");
+
             return View();
         }
 
@@ -38,64 +45,149 @@ namespace Clinique.AspNetCore.Controllers
                 end = rdv.End,
                 color = rdv.ThemeColor,
                 allDay = rdv.IsFullDay,
-                patient = rdv.Dossierpatient.NomP,
-                docteur = rdv.Docteur.NomM,
+                patient = rdv.Dossierpatient.NomComplet,
+                docteur = rdv.Docteur.NomComplet,
             });
 
             return new JsonResult(events);
         }
 
-        [HttpPost]
-        public JsonResult SaveEvent(RendezVous e)
+        // GET: RendezVous/Create
+        public IActionResult Create()
         {
-            var status = false;
-            using (CliniqueDbContext context = _contextFactory.CreateDbContext())
+            ViewData["Couleurs"] = Couleur.CreerSelectList();
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet");
+            ViewData["IdDossier"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet");
+            return View();
+        }
+
+        public ActionResult PartialModal()
+        {
+            return PartialView("_ModalRendezVousPartial", new RendezVous { Start = DateTime.Now });
+        }
+
+        // POST: RendezVous/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Subject,Description,Start,End,ThemeColor,IdDocteur,IdDossierpatient,Id")] RendezVous rendezVous)
+        {
+            rendezVous.IsFullDay = false;
+            if (ModelState.IsValid)
             {
-                if (e.Id > 0)
+                CliniqueDbContext context = _contextFactory.CreateDbContext();
+                context.Add(rendezVous);
+                await context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["Couleurs"] = Couleur.CreerSelectList();
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet", rendezVous.IdDocteur);
+            ViewData["IdDossier"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
+            return View(rendezVous);
+        }
+        // GET: RendezVous/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var rendezVous = await _contextFactory.CreateDbContext().RendezVous.FindAsync(id);
+            if (rendezVous == null)
+            {
+                return NotFound();
+            }
+            ViewData["Couleurs"] = Couleur.CreerSelectList();
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet", rendezVous.IdDocteur);
+            ViewData["IdDossier"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
+            return PartialView("_ModalRendezVousPartial", rendezVous);
+        }
+        public IActionResult CreatePartial(string date)
+        {
+            ViewData["DateEvent"] = date;
+            ViewData["Couleurs"] = Couleur.CreerSelectList();
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet");
+            ViewData["IdDossier"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet");
+            return PartialView("_CreateRendezVousPartial");
+        }
+        // POST: RendezVous/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Subject,Description,Start,End,ThemeColor,IdDocteur,IdDossierpatient,Id")] RendezVous rendezVous)
+        {
+            if (id != rendezVous.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
                 {
-                    //Update the event
-                    var v = context.RendezVous.Where(a => a.Id == e.Id).FirstOrDefault();
-                    if (v != null)
+                    CliniqueDbContext context = _contextFactory.CreateDbContext();
+                    context.Update(rendezVous);
+                    await context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!RendezVousExists(rendezVous.Id))
                     {
-                        v.Subject = e.Subject;
-                        v.Start = e.Start;
-                        v.DateRdv = e.Start;
-                        v.End = e.End;
-                        v.DateFin = e.DateFin;
-                        v.Description = e.Description;
-                        v.IsFullDay = e.IsFullDay;
-                        v.ThemeColor = e.ThemeColor;
-                        v.Duree = 0;
-                        v.IdDocteur = e.IdDocteur;
-                        v.IdDossierpatient = e.IdDossierpatient;
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
                     }
                 }
-                else
-                {
-                    context.Add(e);
-                }
-                context.SaveChangesAsync().Wait();
-                status = true;
+                return RedirectToAction(nameof(Index));
             }
-            return new JsonResult(status);
+            ViewData["Couleurs"] = Couleur.CreerSelectList();
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet", rendezVous.IdDocteur);
+            ViewData["IdDossier"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
+            return View(rendezVous);
         }
 
-        [HttpPost]
-        public JsonResult DeleteEvent(int eventID)
+        // GET: RendezVous/Delete/5
+        public async Task<IActionResult> Delete(int? id)
         {
-            var status = false;
-            using (CliniqueDbContext context = _contextFactory.CreateDbContext())
+            if (id == null)
             {
-                var v = context.RendezVous.Where(a => a.Id == eventID).FirstOrDefault();
-                if (v != null)
-                {
-                    context.RendezVous.Remove(v);
-                    context.SaveChangesAsync().Wait();
-                    status = true;
-                }
+                return NotFound();
             }
-            return new JsonResult(status);
+
+            var rendezVous = await _contextFactory.CreateDbContext().RendezVous
+                .Include(r => r.Docteur)
+                .Include(r => r.Dossierpatient)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (rendezVous == null)
+            {
+                return NotFound();
+            }
+            ViewData["Couleurs"] = Couleur.CreerSelectList();
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet", rendezVous.IdDocteur);
+            ViewData["IdDossierpatient"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
+            return View(rendezVous);
         }
 
+        // POST: RendezVous/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            CliniqueDbContext context = _contextFactory.CreateDbContext();
+            var rendezVous = await context.RendezVous.FindAsync(id);
+            context.RendezVous.Remove(rendezVous);
+            await context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool RendezVousExists(int id)
+        {
+            return _contextFactory.CreateDbContext().RendezVous.Any(e => e.Id == id);
+        }
     }
 }

@@ -27,7 +27,15 @@ namespace Clinique.Domain.Models
         [ForeignKey("Docteur")]
         public int IdDocteur { get; set; }
         public Docteur Docteur { get; set; }
-
+        [NotMapped]
+        [Display(Name = "Nom Patient")]
+        public string NomComplet
+        {
+            get
+            {
+                return NomP + " " + PrenomP;
+            }
+        }
         public virtual ICollection<Consultation> Consultations { get;set;}
         public virtual ICollection<RendezVous> RendezVous { get; set; }
 

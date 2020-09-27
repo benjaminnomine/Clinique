@@ -117,19 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Create new" xml:space="preserve">
-    <value>Créer nouveau</value>
+  <data name="Calendar" xml:space="preserve">
+    <value>Calendrier</value>
   </data>
-  <data name="Delete" xml:space="preserve">
-    <value>Supprimer</value>
+  <data name="Coronavirus" xml:space="preserve">
+    <value>Coronavirus</value>
   </data>
-  <data name="Details" xml:space="preserve">
-    <value>Détails</value>
+  <data name="Home" xml:space="preserve">
+    <value>Accueil</value>
   </data>
-  <data name="Edit" xml:space="preserve">
-    <value>Éditer</value>
-  </data>
-  <data name="Index" xml:space="preserve">
-    <value>Index</value>
+  <data name="Privacy" xml:space="preserve">
+    <value>Vie privée</value>
   </data>
 </root>

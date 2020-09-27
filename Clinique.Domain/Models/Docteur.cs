@@ -26,7 +26,13 @@ namespace Clinique.Domain.Models
         public Niveau Niveau { get; set; }
         [Display(Name = "Nombre de patients")]
         public int NbrPatients { get; set; }
-
+        [NotMapped]
+        [Display(Name = "Nom Docteur")]
+        public string NomComplet { get
+            {
+                return NomM + " " + PrenomM;
+            }
+        }
         public virtual ICollection<RendezVous> RendezVous { get;set;}
         public virtual ICollection<Consultation> Consultations { get;set;}
         public virtual ICollection<Dossierpatient> Dossierspatients { get; set; }
