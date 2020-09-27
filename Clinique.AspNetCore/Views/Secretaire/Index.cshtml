@@ -26,14 +26,14 @@
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
                 <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                    <input asp-for="Start" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                    <input asp-for="Start" type="datetime-local" id="startmodal" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
                     <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     <span asp-validation-for="Start" class="text-danger"></span>
                 </div>
                 <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                    <input asp-for="End" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
+                    <input asp-for="End" type="datetime-local" id="endmodal" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
                     <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
@@ -59,7 +59,7 @@
         </div>
     </div>
 </div>
-<div class="container-fluid">
+<div class="container-fluid" style="opacity:1">
     <div class="row justify-content-center">
         <div id="calendar" class="col-10"></div>
     </div>
@@ -82,7 +82,7 @@
                     right: 'today,dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 navLinks: true,
-                editable: true,
+                editable: false,
                 dayMaxEvents: true,
                 selectable: true,
                 eventSources: [{
@@ -125,7 +125,8 @@
                     //        console.log(req);
                     //    }
                     //})
-                    $('#txtStart').val(info.dateStr);
+                    $('#endmodal').val(info.dateStr);
+                    $('#startmodal').val(info.dateStr);
                     $('#creationRDV').modal();
                 },
             })

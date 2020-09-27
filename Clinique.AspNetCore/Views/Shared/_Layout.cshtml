@@ -16,6 +16,7 @@
     <link href="~/lib/fullcalendar-scheduler/main.css" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
     <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/css/_layout.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -29,19 +30,19 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home"></i>@localizer["Home"]</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index"><i class="fas fa-home pr-1"></i>@localizer["Home"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fas fa-user-secret"></i>@localizer["Privacy"]</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fas fa-user-secret pr-1"></i>@localizer["Privacy"]</a>
                         </li>
                         @*<li class="nav-item">
                                 <a class="nav-link text-white" asp-area="" asp-controller="Categories" asp-action="Index"><i class="fas fa-medkit"></i>Catégories</a>
                             </li>*@
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Coronavirus" asp-action="Index"><i class="fas fa-virus"></i>@localizer["Coronavirus"]</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Coronavirus" asp-action="Index"><i class="fas fa-virus pr-1"></i>@localizer["Coronavirus"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-white" asp-area="" asp-controller="Secretaire" asp-action="Index"><i class="fas fa-calendar-alt"></i>@localizer["Calendar"]</a>
+                            <a class="nav-link text-white" asp-area="" asp-controller="Secretaire" asp-action="Index"><i class="fas fa-calendar-alt pr-1"></i>@localizer["Calendar"]</a>
                         </li>
                         <li class="nav-item">
                             @await Html.PartialAsync("_CulturePartial")
@@ -58,10 +59,10 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted bg-primary">
         <div class="container">
-            &copy; 2020 - Clinique.AspNetCore - <a asp-area="" asp-controller="Home" asp-action="Privacy">@localizer["Privacy"]</a>
-</div>
+            <span class="text-white text-muted">&copy; 2020 - Clinique.AspNetCore - </span><a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-dark text-muted">@localizer["Privacy"]</a>
+        </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/moment/min/moment.min.js"></script>

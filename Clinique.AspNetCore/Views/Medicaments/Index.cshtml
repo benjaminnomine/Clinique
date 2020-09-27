@@ -1,15 +1,28 @@
-﻿@model PaginatedList<Clinique.Domain.Models.Medicament>
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@model PaginatedList<Clinique.Domain.Models.Medicament>
+@inject IHtmlLocalizer<SharedResource> SharedLocalizer
 
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_LayoutMed.cshtml";
 }
 
-<h1>Index</h1>
+<h1>@SharedLocalizer["Index"]</h1>
 
 <p>
-    <a asp-action="Create" class="btn btn-warning">Create New</a>
+    <a class="btn btn-primary" asp-action="Create">@SharedLocalizer["Create new"]</a>
 </p>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            @SharedLocalizer["Filter by name:"] <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-warning" /> |
+            <a asp-action="Index" class="text-warning">@SharedLocalizer["Back to the list"]</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -17,10 +30,10 @@
                 @*@Html.DisplayNameFor(model => model.NomMed)*@<a class="text-warning" asp-action="Index" asp-route-sortOrder="@ViewData["NomSortParm"]">Nom</a>
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.Prix)*@<a  class="text-warning" asp-action="Index" asp-route-sortOrder="@ViewData["PrixSortParm"]">Prix</a>
+                @*@Html.DisplayNameFor(model => model.Prix)*@<a class="text-warning" asp-action="Index" asp-route-sortOrder="@ViewData["PrixSortParm"]">Prix</a>
             </th>
             <th>
-                @*@Html.DisplayNameFor(model => model.Categorie)*@<a  class="text-warning" asp-action="Index" asp-route-sortOrder="@ViewData["CatSortParm"]">Catégorie</a>
+                @*@Html.DisplayNameFor(model => model.Categorie)*@<a class="text-warning" asp-action="Index" asp-route-sortOrder="@ViewData["CatSortParm"]">Catégorie</a>
             </th>
             <th></th>
         </tr>
@@ -39,9 +52,9 @@
                     @Html.DisplayFor(modelItem => item.Categorie.Nom)
                 </td>
                 <td>
-                    <a  class="text-warning" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a  class="text-warning" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a  class="text-warning" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="text-warning" asp-action="Edit" asp-route-id="@item.Id">@SharedLocalizer["Edit"]</a> |
+                    <a class="text-warning" asp-action="Details" asp-route-id="@item.Id">@SharedLocalizer["Details"]</a> |
+                    <a class="text-warning" asp-action="Delete" asp-route-id="@item.Id">@SharedLocalizer["Delete"]</a>
                 </td>
             </tr>
         }
@@ -58,12 +71,12 @@
    asp-route-pageNumber="@(Model.PageIndex - 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
    class="btn btn-warning @prevDisabled">
-    Previous
+    @SharedLocalizer["Previous"]
 </a>
 <a asp-action="Index"
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.PageIndex + 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
    class="btn btn-warning @nextDisabled">
-    Next
+    @SharedLocalizer["Next"]
 </a>

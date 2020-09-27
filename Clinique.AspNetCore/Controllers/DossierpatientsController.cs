@@ -38,24 +38,21 @@ namespace Clinique.AspNetCore.Controllers
             {
                 searchString = currentFilter;
             }
+
             ViewData["CurrentFilter"] = searchString;
             var patients = from s in _contextFactory.CreateDbContext().Dossierpatients.Include(d => d.Docteur) select s;
-
-            switch (sortOrder)
+            if (!String.IsNullOrEmpty(searchString))
             {
-                case "id_desc":
-                    patients = patients.OrderByDescending(s => s.NumAS);
-                    break;
-                case "Date":
-                    patients = patients.OrderBy(s => s.DateNaiss);
-                    break;
-                case "date_desc":
-                    patients = patients.OrderByDescending(s => s.DateNaiss);
-                    break;
-                default:
-                    patients = patients.OrderBy(s => s.NumAS);
-                    break;
+                patients = patients.Where(s => s.NomP.Contains(searchString)
+                                       || s.PrenomP.Contains(searchString));
             }
+            patients = sortOrder switch
+            {
+                "id_desc" => patients.OrderByDescending(s => s.NumAS),
+                "Date" => patients.OrderBy(s => s.DateNaiss),
+                "date_desc" => patients.OrderByDescending(s => s.DateNaiss),
+                _ => patients.OrderBy(s => s.NumAS),
+            };
             int pageSize = 8;
             return View(await PaginatedList<Dossierpatient>.CreateAsync(patients.AsNoTracking(), pageNumber ?? 1, pageSize));
         }
