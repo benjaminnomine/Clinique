@@ -54,6 +54,7 @@ namespace Clinique.Domain.Services.API
                 List<string> dateTimes = new List<string>();
                 List<int> cases = new List<int>();
                 List<int> deaths = new List<int>();
+                List<int> casesperday = new List<int>();
                 foreach(KeyValuePair<string, int> date in aPICountry.Timeline.Cases)
                 {
                     //TODO A faire en revenant sur du DateTime!
@@ -61,12 +62,23 @@ namespace Clinique.Domain.Services.API
                     dateTimes.Add(date.Key);
                     cases.Add(date.Value);
                 }
+                for(var i = 0; i<cases.Count; i++)
+                {
+                    if(i == 0)
+                    {
+                        casesperday.Add(0);
+                    }
+                    else
+                    {
+                        casesperday.Add(cases[i]-cases[i-1]);
+                    }
+                }
                 foreach(KeyValuePair<string, int> date in aPICountry.Timeline.Deaths)
                 {
                     deaths.Add(date.Value);
                 }
 
-                return new CovidCountry() { CountryName = aPICountry.Country, Dates = dateTimes , Cases = cases, Deaths = deaths };
+                return new CovidCountry() { CountryName = aPICountry.Country, Dates = dateTimes , Cases = cases, Deaths = deaths, CasePerDay = casesperday };
             }
         }
     }

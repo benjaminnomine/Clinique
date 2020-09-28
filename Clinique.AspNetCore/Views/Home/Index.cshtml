@@ -8,6 +8,7 @@
 	var XValues = @Html.Raw(Json.Serialize(Model.Dates));
 	var YValues1 = @Html.Raw(Json.Serialize(Model.Cases));
 	var YValues2 = @Html.Raw(Json.Serialize(Model.Deaths));
+	var YValues3 = @Html.Raw(Json.Serialize(Model.CasePerDay));
 	var DataTitle = @Html.Raw(Json.Serialize(Model.CountryName));
 	var MaxValue = Html.Raw(Json.Serialize(Model.Cases.ToArray()[Model.Cases.Count() - 1]));
 }
@@ -27,7 +28,7 @@
             </div>
             <div class="col-6 col-md-3 card alert alert-danger p-1">
                 <div class="card-body ">
-                    <a asp-action="Index" asp-controller="Docteurs">@localizer["Docteurs"]</a>
+                    <a asp-action="Index" asp-controller="Docteurs">@localizer["Doctors"]</a>
                 </div>
                 <div class="card-footer">
                     <a asp-action="Index" asp-controller="Docteurs"><i class="fas fa-user-md fa-3x text-white"></i></a>
@@ -35,7 +36,7 @@
             </div>
             <div class="col-6 col-md-3 card alert alert-warning p-1">
                 <div class="card-body ">
-                    <a asp-action="Index" asp-controller="Medicaments">@localizer["Médicaments"]</a>
+                    <a asp-action="Index" asp-controller="Medicaments">@localizer["Drugs"]</a>
                 </div>
                 <div class="card-footer">
                     <a asp-action="Index" asp-controller="Medicaments"><i class="fas fa-pills fa-3x text-white"></i></a>
@@ -59,26 +60,35 @@
     </div>
 @section Scripts {
 	<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-	<script>
+    <script>
 		var ctx = document.getElementById('chart');
 		var chart = new Chart(ctx, {
 				type: 'line',
 				data: {
 					labels: @XValues,
 					datasets: [{
-						label: 'Nombre de cas',
+						label: '@localizer["Total number of cases"]',
 						borderColor: 'rgba(255, 99, 132)',
 						backgroundColor: 'rgba(255, 99, 132, 0.2)',
 						fill: false,
 						data: @YValues1,
 						yAxisID: 'y-axis-1',
 					}, {
-						label: 'Nombre de morts',
+						label: '@localizer["Total number of deaths"]',
 						borderColor: 'rgba(54, 162, 235)',
 						backgroundColor: 'rgba(54, 162, 235, 0.2)',
 						fill: false,
 						data: @YValues2,
 						yAxisID: 'y-axis-2'
+					},
+					{
+						label: '@localizer["Cases per day"]',
+                        borderColor: 'rgba(75, 192, 192)',
+                        backgroundColor: 'rgba(75, 192, 192)',
+						fill: false,
+						data: @YValues3,
+						yAxisID: 'y-axis-3',
+						type: 'bar'
 					}]
 				},
 				options: {
@@ -111,6 +121,14 @@
 							gridLines: {
 								drawOnChartArea: false,
 							},
+						}, {
+							type: 'linear',
+							display: true,
+							position: 'right',
+							id: 'y-axis-3',
+							gridLines: {
+								drawOnChartArea: true,
+							},
 							}],
 						xAxes: [{
 							ticks: {
@@ -121,7 +139,7 @@
 					}
 				}
 			});
-	</script>
+    </script>
 }
 
 @*options = {

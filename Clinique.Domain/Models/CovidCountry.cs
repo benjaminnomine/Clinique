@@ -10,5 +10,6 @@ namespace Clinique.Domain.Models
         public IEnumerable<string> Dates { get; set; }
         public IEnumerable<int> Cases { get; set; }
         public IEnumerable<int> Deaths { get; set; }
+        public IEnumerable<int> CasePerDay { get;set;}
     }
 }
