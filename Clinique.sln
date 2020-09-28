@@ -9,12 +9,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinique.EntityFramework", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinique.AspNetCore", "Clinique.AspNetCore\Clinique.AspNetCore.csproj", "{1AA9A44A-4CA9-4C9F-90B6-ECBC39179938}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinique.Console", "ConsoleApp2\Clinique.Console.csproj", "{CF7F2C05-5223-426C-AA37-6A7E4C0DF0FC}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8D8AED0A-3C5B-483A-9D31-A8CE0EED30F7}"
 	ProjectSection(SolutionItems) = preProject
 		.a11yrc = .a11yrc
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clinique.Console", "Console.Console\Clinique.Console.csproj", "{EC3D8D6A-AE13-4666-B144-67CC5076D77E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,10 +34,10 @@ Global
 		{1AA9A44A-4CA9-4C9F-90B6-ECBC39179938}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1AA9A44A-4CA9-4C9F-90B6-ECBC39179938}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1AA9A44A-4CA9-4C9F-90B6-ECBC39179938}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF7F2C05-5223-426C-AA37-6A7E4C0DF0FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF7F2C05-5223-426C-AA37-6A7E4C0DF0FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF7F2C05-5223-426C-AA37-6A7E4C0DF0FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF7F2C05-5223-426C-AA37-6A7E4C0DF0FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC3D8D6A-AE13-4666-B144-67CC5076D77E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC3D8D6A-AE13-4666-B144-67CC5076D77E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC3D8D6A-AE13-4666-B144-67CC5076D77E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC3D8D6A-AE13-4666-B144-67CC5076D77E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
