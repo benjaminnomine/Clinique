@@ -4,5 +4,65 @@
     "inputFiles": [
       "wwwroot/lib/moment/dist/moment.js"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js",
+    "inputFiles": [
+      "wwwroot/lib/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/dist/js/bootstrap.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+    "inputFiles": [
+      "wwwroot/lib/bootstrap/dist/css/bootstrap.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/Chart.js/Chart.min.js",
+    "inputFiles": [
+      "wwwroot/lib/Chart.js/Chart.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/Chart.js/Chart.min.css",
+    "inputFiles": [
+      "wwwroot/lib/Chart.js/Chart.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/fortawesome/fontawesome-free/css/all.min.css",
+    "inputFiles": [
+      "wwwroot/lib/fortawesome/fontawesome-free/css/all.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/fortawesome/fontawesome-free/js/all.min.js",
+    "inputFiles": [
+      "wwwroot/lib/fortawesome/fontawesome-free/js/all.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/fullcalendar-scheduler/main.min.js",
+    "inputFiles": [
+      "wwwroot/lib/fullcalendar-scheduler/main.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/fullcalendar-scheduler/main.min.css",
+    "inputFiles": [
+      "wwwroot/lib/fullcalendar-scheduler/main.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/fullcalendar-scheduler/locales-all.min.js",
+    "inputFiles": [
+      "wwwroot/lib/fullcalendar-scheduler/locales-all.js"
+    ]
   }
 ]

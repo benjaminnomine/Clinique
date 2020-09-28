@@ -8,10 +8,6 @@
       "destination": "wwwroot/lib/moment/"
     },
     {
-      "library": "@fortawesome/fontawesome-free@5.14.0",
-      "destination": "wwwroot/lib/fortawesome/fontawesome-free/"
-    },
-    {
       "provider": "cdnjs",
       "library": "Chart.js@2.9.3",
       "destination": "wwwroot/lib/Chart.js/"
@@ -30,6 +26,11 @@
       "provider": "jsdelivr",
       "library": "fullcalendar-scheduler@5.3.2",
       "destination": "wwwroot/lib/fullcalendar-scheduler/"
+    },
+    {
+      "provider": "jsdelivr",
+      "library": "@fortawesome/fontawesome-free@5.14.0",
+      "destination": "wwwroot/lib/fortawesome/fontawesome-free/"
     }
   ]
 }
