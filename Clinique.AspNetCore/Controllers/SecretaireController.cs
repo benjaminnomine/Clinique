@@ -66,7 +66,7 @@ namespace Clinique.AspNetCore.Controllers
             return PartialView("_ModalRendezVousPartial", new RendezVous { Start = DateTime.Now });
         }
 
-        // POST: RendezVous/Create
+        // POST: Secretaire/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
