@@ -1,6 +1,9 @@
 ﻿@model Clinique.Domain.Models.RendezVous
 @{
     ViewData["Title"] = "Sécrétariat";
+
+    var requestCultureFeature = Context.Features.Get<IRequestCultureFeature>();
+    var requestCulture = requestCultureFeature.RequestCulture.Culture;
 }
 
 <div id="editionRDV" class="modal fade" role="dialog">
@@ -25,20 +28,20 @@
                         <input asp-for="Description" class="form-control" />
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </div>
-                <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
-                    <input asp-for="Start" type="datetime-local" id="startmodal" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
-                    <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
+                        <input asp-for="Start" id="startmodal" class="form-control datetimepicker-input" data-target="#datetimepicker1" asp-format="{0:dd/MM/yyyy HH:mm}"/>
+                        <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                        <span asp-validation-for="Start" class="text-danger"></span>
                     </div>
-                    <span asp-validation-for="Start" class="text-danger"></span>
-                </div>
-                <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
-                    <input asp-for="End" type="datetime-local" id="endmodal" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
-                    <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
+                        <input asp-for="End" id="endmodal" class="form-control datetimepicker-input" data-target="#datetimepicker2" asp-format="{0:dd/MM/yyyy HH:mm}"/>
+                        <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                        <span asp-validation-for="End" class="text-danger"></span>
                     </div>
-                    <span asp-validation-for="End" class="text-danger"></span>
-                </div>
                     <div class="form-group">
                         <label asp-for="ThemeColor" class="control-label"></label>
                         <select asp-for="ThemeColor" class="form-control" asp-items="ViewBag.Couleurs"></select>
@@ -67,104 +70,223 @@
 
 @section Scripts {
 
-    <script>
-        $(document).ready(function () {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                timeZone: 'local',
-                schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
-                contentHeight: 600,
-                themeSystem: 'bootstrap',
-                initialView: 'dayGridMonth',
-                headerToolbar: {
-                    left: 'prev,next',
-                    center: 'title',
-                    right: 'today,dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                navLinks: true,
-                editable: false,
-                dayMaxEvents: true,
-                selectable: true,
-                eventSources: [{
-                    url: '/secretaire/GetEvents',
-                    method: 'GET',
-                }],
-                businessHours: {
-                    daysOfWeek: [1, 2, 3, 4, 5],
-                    startTime: '9:00',
-                    endTime: '20:00',
-                },
-                firstDay: 0,
-                locale: 'fr',
-                eventClick: function (calEvent) {
-                    $.ajax({
-                        type: "GET",
-                        url: "/Secretaire/Edit/" + calEvent.event.extendedProps.eventid,
-                        dataType: "html",
-                        success: function (evt) {
-                            $('#editionRDV').html(evt);
-                            $('#editionRDV').modal();
-                        },
-                        error: function (req, status, error) {
-                            console.log(req);
-                        }
-                    });
+    @if (requestCulture.TwoLetterISOLanguageName.Equals("fr"))
+        {
+        <script>
+            $(document).ready(function () {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    timeZone: 'local',
+                    schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+                    contentHeight: 600,
+                    themeSystem: 'bootstrap',
+                    initialView: 'dayGridMonth',
+                    headerToolbar: {
+                        left: 'prev,next',
+                        center: 'title',
+                        right: 'today,dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    navLinks: true,
+                    editable: false,
+                    dayMaxEvents: true,
+                    selectable: true,
+                    eventSources: [{
+                        url: '/secretaire/GetEvents',
+                        method: 'GET',
+                    }],
+                    businessHours: {
+                        daysOfWeek: [1, 2, 3, 4, 5],
+                        startTime: '9:00',
+                        endTime: '20:00',
+                    },
+                    firstDay: 0,
+                    locale: 'fr',
+                    eventClick: function (calEvent) {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/Secretaire/Edit/' + calEvent.event.extendedProps.eventid,
+                            dataType: 'html',
+                            success: function (evt) {
+                                $('#editionRDV').html(evt);
+                                $('#editionRDV').modal();
+                            },
+                            error: function (req, status, error) {
+                                console.log(req);
+                            }
+                        });
 
-                },
-                dateClick: function (info) {
-                    //$.ajax({
-                    //    type: "GET",
-                    //    url: "/Secretaire/CreatePartial/" + info.dateStr,
-                    //    dataType: "html",
-                    //    success: function (evt) {
-                    //        //$('#txtStart').val(info.dateStr);
-                    //        $('#creationRDV').html(evt);
-                    //        $('#creationRDV').modal();
-                    //    },
-                    //    error: function (req, status, error) {
-                    //        console.log(req);
-                    //    }
-                    //})
-                    $('#endmodal').val(info.dateStr);
-                    $('#startmodal').val(info.dateStr);
-                    $('#creationRDV').modal();
-                },
-            })
-            calendar.render();
-            $('#datetimepicker3').datetimepicker({
-                locale: 'fr-ca'
-            });
-            $('#datetimepicker3').on("change.datetimepicker", function (e) {
-                $('#datetimepicker4').datetimepicker('minDate', e.date);
-            });
-            $('#datetimepicker4').datetimepicker({
-                locale: 'fr-ca',
-                useCurrent: false
-            });
-            $('#datetimepicker4').on("change.datetimepicker", function (e) {
-                $('#datetimepicker3').datetimepicker('maxDate', e.date);
-            });
-            $('#datetimepicker1').datetimepicker({
-                locale: 'fr-ca'
-            });
-            $('#datetimepicker1').on("change.datetimepicker", function (e) {
-                $('#datetimepicker2').datetimepicker('minDate', e.date);
-                $('#datetimepicker2').data("DateTimePicker").date(moment(e.date).add(30, "minutes"));
-            });
-            $('#datetimepicker2').datetimepicker({
-                locale: 'fr-ca',
-                useCurrent: false
-            });
-            $('#datetimepicker2').on("change.datetimepicker", function (e) {
-                $('#datetimepicker1').datetimepicker('maxDate', e.date);
-            });
-            $('#datetimepicker7').datetimepicker({
-                locale: 'fr-ca'
-            });
-            $('#datetimepicker8').datetimepicker({
-                locale: 'fr-ca'
-            });
-        }
-        )
-    </script>
+                    },
+                    dateClick: function (info) {
+                        //$.ajax({
+                        //    type: "GET",
+                        //    url: "/Secretaire/CreatePartial/" + info.dateStr,
+                        //    dataType: "html",
+                        //    success: function (evt) {
+                        //        //$('#txtStart').val(info.dateStr);
+                        //        $('#creationRDV').html(evt);
+                        //        $('#creationRDV').modal();
+                        //    },
+                        //    error: function (req, status, error) {
+                        //        console.log(req);
+                        //    }
+                        //})
+                        $('#endmodal').val(info.dateStr);
+                        $('#startmodal').val(info.dateStr);
+                        $('#creationRDV').modal();
+                    },
+                })
+                calendar.render();
+                $('#datetimepicker3').datetimepicker({
+                    locale: 'fr-ca',
+                    daysOfWeekDisabled: [0, 6]
+                });
+                $('#datetimepicker3').on("change.datetimepicker", function (e) {
+                    $('#datetimepicker4').datetimepicker('minDate', e.date);
+                });
+                $('#datetimepicker4').datetimepicker({
+                    locale: 'fr-ca',
+                    useCurrent: false,
+                    daysOfWeekDisabled: [0, 6]
+                });
+                $('#datetimepicker4').on("change.datetimepicker", function (e) {
+                    $('#datetimepicker3').datetimepicker('maxDate', e.date);
+                });
+                $('#datetimepicker1').datetimepicker({
+                    locale: 'fr-ca',
+                    daysOfWeekDisabled: [0, 6]
+                });
+                $('#datetimepicker1').on("change.datetimepicker", function (e) {
+                    $('#datetimepicker2').datetimepicker('minDate', e.date);
+                    $('#datetimepicker2').data("DateTimePicker").date(moment(e.date).add(30, "minutes"));
+                });
+                $('#datetimepicker2').datetimepicker({
+                    locale: 'fr-ca',
+                    useCurrent: false,
+                    daysOfWeekDisabled: [0, 6]
+                });
+                $('#datetimepicker2').on("change.datetimepicker", function (e) {
+                    $('#datetimepicker1').datetimepicker('maxDate', e.date);
+                });
+                $('#datetimepicker6').datetimepicker({
+                    locale: 'fr-ca',
+                    daysOfWeekDisabled: [0, 6]
+                });
+                $('#datetimepicker7').datetimepicker({
+                    locale: 'fr-ca',
+                    daysOfWeekDisabled: [0, 6]
+                });
+            }
+            )
+        </script>
+    }
+    else
+    {
+        <script>
+            $(document).ready(function () {
+                var calendarEl = document.getElementById('calendar');
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    timeZone: 'local',
+                    schedulerLicenseKey: 'GPL-My-Project-Is-Open-Source',
+                    contentHeight: 600,
+                    themeSystem: 'bootstrap',
+                    initialView: 'dayGridMonth',
+                    headerToolbar: {
+                        left: 'prev,next',
+                        center: 'title',
+                        right: 'today,dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    navLinks: true,
+                    editable: false,
+                    dayMaxEvents: true,
+                    selectable: true,
+                    eventSources: [{
+                        url: '/secretaire/GetEvents',
+                        method: 'GET',
+                    }],
+                    businessHours: {
+                        daysOfWeek: [1, 2, 3, 4, 5],
+                        startTime: '9:00',
+                        endTime: '20:00',
+                    },
+                    firstDay: 0,
+                    locale: 'en',
+                    eventClick: function (calEvent) {
+                        $.ajax({
+                            type: 'GET',
+                            url: '/Secretaire/Edit/' + calEvent.event.extendedProps.eventid,
+                            dataType: 'html',
+                            success: function (evt) {
+                                $('#editionRDV').html(evt);
+                                $('#editionRDV').modal();
+                            },
+                            error: function (req, status, error) {
+                                console.log(req);
+                            }
+                        });
+                    },
+                    dateClick: function (info) {
+                        //$.ajax({
+                        //    type: "GET",
+                        //    url: "/Secretaire/CreatePartial/" + info.dateStr,
+                        //    dataType: "html",
+                        //    success: function (evt) {
+                        //        //$('#txtStart').val(info.dateStr);
+                        //        $('#creationRDV').html(evt);
+                        //        $('#creationRDV').modal();
+                        //    },
+                        //    error: function (req, status, error) {
+                        //        console.log(req);
+                        //    }
+                        //})
+                        $('#endmodal').val(info.dateStr);
+                        $('#startmodal').val(info.dateStr);
+                        $('#creationRDV').modal();
+                    },
+                })
+                calendar.render();
+                $('#datetimepicker3').datetimepicker({
+                    locale: 'fr-ca',
+                    daysOfWeekDisabled: [0, 6]
+                });
+                $('#datetimepicker3').on("change.datetimepicker", function (e) {
+                    $('#datetimepicker4').datetimepicker('minDate', e.date);
+                });
+                $('#datetimepicker4').datetimepicker({
+                    locale: 'fr-ca',
+                    useCurrent: false,
+                    daysOfWeekDisabled: [0, 6]
+                });
+                $('#datetimepicker4').on("change.datetimepicker", function (e) {
+                    $('#datetimepicker3').datetimepicker('maxDate', e.date);
+                });
+                $('#datetimepicker1').datetimepicker({
+                    locale: 'fr-ca',
+                    daysOfWeekDisabled: [0, 6]
+                });
+                $('#datetimepicker1').on("change.datetimepicker", function (e) {
+                    $('#datetimepicker2').datetimepicker('minDate', e.date);
+                    $('#datetimepicker2').data("DateTimePicker").date(moment(e.date).add(30, "minutes"));
+                });
+                $('#datetimepicker2').datetimepicker({
+                    locale: 'fr-ca',
+                    useCurrent: false,
+                    daysOfWeekDisabled: [0, 6]
+                });
+                $('#datetimepicker2').on("change.datetimepicker", function (e) {
+                    $('#datetimepicker1').datetimepicker('maxDate', e.date);
+                });
+                $('#datetimepicker6').datetimepicker({
+                    locale: 'fr-ca',
+                    daysOfWeekDisabled: [0, 6]
+                });
+                $('#datetimepicker7').datetimepicker({
+                    locale: 'fr-ca',
+                    daysOfWeekDisabled: [0, 6]
+                });
+            }
+            )
+        </script>
+    }
+
+
 }

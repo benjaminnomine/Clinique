@@ -10,8 +10,10 @@ namespace Clinique.Domain.Models
         [Display(Name = "Sujet")]
         public string Subject { get; set; }
         public string Description { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true)]
         [Display(Name = "Date de début")]
         public DateTime Start { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true)]
         [Display(Name = "Date de fin")]
         public DateTime End { get; set; }
         [Display(Name = "Couleur du rendez-vous")]

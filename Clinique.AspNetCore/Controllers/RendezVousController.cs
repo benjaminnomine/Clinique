@@ -72,7 +72,7 @@ namespace Clinique.AspNetCore.Controllers
             }
             ViewData["Couleurs"] = Couleur.CreerSelectList();
             ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet", rendezVous.IdDocteur);
-            ViewData["IdDossierpatient"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
+            ViewData["IdDossier"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
             return View(rendezVous);
         }
 
@@ -91,7 +91,7 @@ namespace Clinique.AspNetCore.Controllers
             }
             ViewData["Couleurs"] = Couleur.CreerSelectList();
             ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet", rendezVous.IdDocteur);
-            ViewData["IdDossierpatient"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
+            ViewData["IdDossier"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
             return View(rendezVous);
         }
 
@@ -130,7 +130,7 @@ namespace Clinique.AspNetCore.Controllers
             }
             ViewData["Couleurs"] = Couleur.CreerSelectList();
             ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet", rendezVous.IdDocteur);
-            ViewData["IdDossierpatient"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
+            ViewData["IdDossier"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
             return View(rendezVous);
         }
 

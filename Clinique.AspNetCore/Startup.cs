@@ -10,6 +10,7 @@ using Clinique.EntityFramework.Services;
 using Clinique.Ressources;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -46,6 +47,7 @@ namespace Clinique.AspNetCore
             services.AddSingleton<ICoronavirusCountryService, APICoronavirusCountryService>();
             services.AddSingleton<CoronavirusController>();
             services.AddSingleton<HomeController>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSingleton<ISharedViewLocalizer, SharedViewLocalizer>();
             services.AddDefaultIdentity<CliniqueAspNetCoreUser>(options => options.SignIn.RequireConfirmedAccount = true)

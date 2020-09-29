@@ -74,6 +74,8 @@ namespace Clinique.AspNetCore.Controllers
         public async Task<IActionResult> Create([Bind("Subject,Description,Start,End,ThemeColor,IdDocteur,IdDossierpatient,Id")] RendezVous rendezVous)
         {
             rendezVous.IsFullDay = false;
+            rendezVous.Start = rendezVous.Start.ToUniversalTime();
+            rendezVous.End = rendezVous.End.ToUniversalTime();
             if (ModelState.IsValid)
             {
                 CliniqueDbContext context = _contextFactory.CreateDbContext();
@@ -86,15 +88,25 @@ namespace Clinique.AspNetCore.Controllers
             ViewData["IdDossier"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
             return View(rendezVous);
         }
+
+        public IActionResult CreatePartial(string date)
+        {
+            ViewData["DateEvent"] = date;
+            ViewData["Couleurs"] = Couleur.CreerSelectList();
+            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet");
+            ViewData["IdDossier"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet");
+            return PartialView("_CreateRendezVousPartial");
+        }
+        [HttpGet]
         // GET: RendezVous/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var rendezVous = await _contextFactory.CreateDbContext().RendezVous.FindAsync(id);
+            var rendezVous = _contextFactory.CreateDbContext().RendezVous.Include(d => d.Docteur).Include(p => p.Dossierpatient).Where(x => x.Id == id).FirstOrDefault();
             if (rendezVous == null)
             {
                 return NotFound();
@@ -104,20 +116,13 @@ namespace Clinique.AspNetCore.Controllers
             ViewData["IdDossier"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet", rendezVous.IdDossierpatient);
             return PartialView("_ModalRendezVousPartial", rendezVous);
         }
-        public IActionResult CreatePartial(string date)
-        {
-            ViewData["DateEvent"] = date;
-            ViewData["Couleurs"] = Couleur.CreerSelectList();
-            ViewData["IdDocteur"] = new SelectList(_contextFactory.CreateDbContext().Docteurs, "Id", "NomComplet");
-            ViewData["IdDossier"] = new SelectList(_contextFactory.CreateDbContext().Dossierpatients, "Id", "NomComplet");
-            return PartialView("_CreateRendezVousPartial");
-        }
-        // POST: RendezVous/Edit/5
+
+        // POST: Secretaire/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Subject,Description,Start,End,ThemeColor,IdDocteur,IdDossierpatient,Id")] RendezVous rendezVous)
+        public async Task<IActionResult> Edit(int id, [Bind("Subject,Description,Start,End,ThemeColor,IsFullDay,IdDocteur,IdDossierpatient,Id")] RendezVous rendezVous)
         {
             if (id != rendezVous.Id)
             {

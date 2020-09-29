@@ -22,14 +22,14 @@
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
                 <div class="input-group date" id="datetimepicker11" data-target-input="nearest">
-                    <input asp-for="Start" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker11" />
+                    <input asp-for="Start" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker11" asp-format="{0:dd/MM/yyyy HH:mm}"/>
                     <div class="input-group-append" data-target="#datetimepicker11" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>
                     <span asp-validation-for="Start" class="text-danger"></span>
                 </div>
                 <div class="input-group date" id="datetimepicker12" data-target-input="nearest">
-                    <input asp-for="End" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker12" />
+                    <input asp-for="End" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker12" asp-format="{0:dd/MM/yyyy HH:mm}"/>
                     <div class="input-group-append" data-target="#datetimepicker12" data-toggle="datetimepicker">
                         <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                     </div>

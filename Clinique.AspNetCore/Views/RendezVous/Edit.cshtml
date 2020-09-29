@@ -22,19 +22,19 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group date" id="datetimepicker1" data-target-input="nearest">
+            <div class="input-group date" id="datetimepicker1" data-target-input="nearest">
                 <label asp-for="Start" class="control-label"></label>
-                <input asp-for="Start" type="datetime-local" id="txtStart" class="form-control datetimepicker-input" data-target="#datetimepicker1" />
+                <input asp-for="Start" type="datetime-local" id="txtStart" class="form-control datetimepicker-input" data-target="#datetimepicker1" asp-format="{0:dd/MM/yyyy HH:mm}"/>
                 <div class="input-group-append" data-target="#datetimepicker1" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    <div class="input-group-text"><i class="fas fa-calendar"></i></div>
                 </div>
                 <span asp-validation-for="Start" class="text-danger"></span>
             </div>
-            <div class="form-group date" id="datetimepicker2" data-target-input="nearest">
+            <div class="input-group date" id="datetimepicker2" data-target-input="nearest">
                 <label asp-for="End" class="control-label"></label>
-                <input asp-for="End" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker2" />
+                <input asp-for="End" type="datetime-local" class="form-control datetimepicker-input" data-target="#datetimepicker2" asp-format="{0:dd/MM/yyyy HH:mm}"/>
                 <div class="input-group-append" data-target="#datetimepicker2" data-toggle="datetimepicker">
-                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                    <div class="input-group-text"><i class="fas fa-calendar"></i></div>
                 </div>
                 <span asp-validation-for="End" class="text-danger"></span>
             </div>
@@ -69,10 +69,13 @@
     <script type="text/javascript">
         $(function () {
             $('#datetimepicker1').datetimepicker({
-                locale: 'fr-ca'
+                locale: 'fr-ca',
+                daysOfWeekDisabled: [0, 6]
+
             });
             $('#datetimepicker2').datetimepicker({
-                locale: 'fr-ca'
+                locale: 'fr-ca',
+                daysOfWeekDisabled: [0, 6]
             });
         });
     </script>
