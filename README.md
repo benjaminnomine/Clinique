@@ -9,11 +9,12 @@ Projet ASP.NET de gestion de Clinique, avec intégration de Javascript, Ajax
 * moment.js
 
 # Technologies et patrons
-Singleton
-Factory
+* Singleton
+* Factory
+* Injection de dépendances
 
 # Base de données
-MS Sql Server
+* MS Sql Server
 
 # Screenshots
 :fire: à venir
